@@ -1,4 +1,7 @@
 #!/bin/sh -l
 
-who=$1
-echo "Hello" $who
+SLACK_WEBHOOK=$1
+TYPE=$2
+
+echo "SLACK_WEBHOOK" $SLACK_WEBHOOK
+echo "TYPE" $TYPE

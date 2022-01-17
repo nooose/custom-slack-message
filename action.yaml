@@ -1,12 +1,15 @@
-name: 'Hello World'               # action 이름
-description: 'Greet someone'      # 간단한 설명
+name: 'Custom Slack Message'               # action 이름
+description: 'Slack Message'      # 간단한 설명
 inputs:
-  slack-url:                   # id of input    
-    description: 'Who to greet'
+  SLACK_WEBHOOK: 
     required: true
-    default: 'World'
+    default: ''
+  TYPE: 
+    required: true
+    default: ''
 runs:
   using: 'docker'                 # 도커 사용 명시
   image: 'Dockerfile'             # Dockerfile을 이용하여 이미지 생성
   args:                           # docker run 에서 넘길 파라미터
-    - ${{ inputs.slack-url }}
+    - ${{ inputs.SLACK_WEBHOOK }}
+    - ${{ inputs.TYPE }}
