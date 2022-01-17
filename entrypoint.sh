@@ -12,6 +12,16 @@ echo "PR_NUMBER" $PR_NUMBER
 
 # pr
 # if [ $TYPE == "pr" ]; then
+PR_RESULT=$(curl https://api.github.com/repos/nooose/custom-slack-message/pulls \
+                -H "Accept: application/vnd.github.v3+json" | \
+                jq '.[] | select(.number == '\"$PR_NUMBER\"')')
+
+HEAD=$(echo $PR_RESULT | jq .head.ref)
+BASE=$(echo $PR_RESULT | jq .base.ref)
+echo HEAD $HEAD
+echo BASE $BASE
+
+
 
 COLOR=\#A0A0A0
 cat << EOF > payload.json
