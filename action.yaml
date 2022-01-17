@@ -1,5 +1,5 @@
 name: 'Custom Slack Message'               # action 이름
-description: 'Slack Message'               # 간단한 설명
+description: 'Slack Message'                # 간단한 설명
 inputs:
   SLACK_WEBHOOK: 
     required: true
@@ -16,4 +16,4 @@ runs:
   args:                           # docker run 에서 넘길 파라미터
     - ${{ inputs.SLACK_WEBHOOK }}
     - ${{ inputs.TYPE }}
-    - ${{ github.event.number }}
+    - ${{ inputs.PR_NUMBER }}
