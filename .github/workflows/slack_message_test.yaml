@@ -3,10 +3,10 @@ on: push
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Test echo
     steps:
-    - name: Hello world action step
+    - name: Hello world
       id: hello
       uses: nooose/custom-slack-message@master
       with:
-        who-to-greet: 'Mona the Octocat'
+        slack_url: test

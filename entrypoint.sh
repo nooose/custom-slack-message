@@ -1,4 +1,4 @@
 #!/bin/sh -l
 
-who=${1:-world}
+who=${slack_url}
 echo "Hello" $who
