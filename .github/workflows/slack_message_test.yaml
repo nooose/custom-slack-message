@@ -1,13 +1,21 @@
-on: push
+on:
+  push:
+    pull_request:
+    branches:
+      - develop
+    types: [ closed ]
 
 jobs:
-  hello_world_job:
+  slack:
     runs-on: ubuntu-latest
-    name: Test echo
     steps:
-    - name: Hello world
-      id: hello
+    - name: test message
       uses: nooose/custom-slack-message@master
       with:
         SLACK_WEBHOOK: http://naver.com
         TYPE: PR
+
+    - name: echo pr info
+      run: |
+        echo [INFO] PR_NUMBER : ${{ github.event.number }}
+
