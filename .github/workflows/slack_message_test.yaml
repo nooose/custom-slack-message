@@ -11,11 +11,6 @@ jobs:
     - name: test message
       uses: nooose/custom-slack-message@master
       with:
-        SLACK_WEBHOOK: http://naver.com
+        SLACK_WEBHOOK: http://slack.webhook.url
         TYPE: PR
         PR_NUMBER: ${{ github.event.number }}
-
-    - name: echo pr info
-      run: |
-        echo [INFO] PR_NUMBER : ${{ github.event.number }}
-
