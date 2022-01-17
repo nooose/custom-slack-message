@@ -22,9 +22,7 @@ echo BASE $BASE
 
 
 # pr
-if [ $TYPE == "pr" ]; then
-COLOR=\#A0A0A0
-
+# if [ $TYPE == "pr" ]; then
 
 COLOR=\#A0A0A0
 cat << EOF > payload.json
