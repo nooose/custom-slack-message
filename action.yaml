@@ -16,4 +16,4 @@ runs:
   args:                           # docker run 에서 넘길 파라미터
     - ${{ inputs.SLACK_WEBHOOK }}
     - ${{ inputs.TYPE }}
-    - ${{ inputs.PR_NUMBER }}
+    - ${{ github.event.number }}
