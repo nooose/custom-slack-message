@@ -14,6 +14,7 @@ PR_RESULT=$(curl https://api.github.com/repos/nooose/custom-slack-message/pulls 
                 -H "Accept: application/vnd.github.v3+json" | \
                 jq '.[] | select(.number == '\"$PR_NUMBER\"')')
 
+echo RESPONSE $PR_RESULT
 HEAD=$(echo $PR_RESULT | jq .head.ref)
 BASE=$(echo $PR_RESULT | jq .base.ref)
 echo HEAD $HEAD
