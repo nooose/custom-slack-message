@@ -11,9 +11,8 @@ echo "PR_NUMBER" $PR_NUMBER
 
 # pr
 # if [ $TYPE == "pr" ]; then
-PR_RESULT=$(curl https://api.github.com/repos/nooose/custom-slack-message/pulls \
-                -H "Accept: application/vnd.github.v3+json" | \
-                jq ".[] | select(.number == $PR_NUMBER)")
+PR_RESULT=$(curl https://api.github.com/repos/nooose/custom-slack-message/pulls/$PR_NUMBER \
+                -H "Accept: application/vnd.github.v3+json"
 
 echo RESPONSE $PR_RESULT
 HEAD=$(echo $PR_RESULT | jq .head.ref)
