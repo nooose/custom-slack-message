@@ -8,8 +8,6 @@ echo "SLACK_WEBHOOK" $SLACK_WEBHOOK
 echo "TYPE" $TYPE
 echo "PR_NUMBER" $PR_NUMBER
 
-
-
 # pr
 # if [ $TYPE == "pr" ]; then
 
