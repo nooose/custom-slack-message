@@ -94,10 +94,7 @@ cat << EOF > payload.json
 EOF
 
 else if [ $TYPE == "build" ]; then
-
-
-
+    echo $TYPE 
 else if [ $TYPE == "helm" ]; then
-
-
+    echo $TYPE
 fi
