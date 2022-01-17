@@ -2,6 +2,7 @@
 
 SLACK_WEBHOOK=$1
 TYPE=$2
+PR_NUMBER=$3
 
 echo "SLACK_WEBHOOK" $SLACK_WEBHOOK
 echo "TYPE" $TYPE
@@ -30,7 +31,7 @@ cat << EOF > payload.json
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*`develop`*  :arrow_left:  *`api/*`*"
+                        "text": "*\`develop\`*  :arrow_left:  *\`api/*\`*"
                     }
                 },
                 {
