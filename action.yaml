@@ -1,5 +1,5 @@
 name: 'Custom Slack Message'               # action 이름
-description: 'Slack Message'               # 간단한 설명
+description: 'Slack Message'                # 간단한 설명
 inputs:
   SLACK_WEBHOOK: 
     required: true
