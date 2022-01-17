@@ -1,5 +1,4 @@
 #!/bin/sh -l
 
-who=${slack_url}
+who=$1
 echo "Hello" $who
-echo "Hello" $inputs
