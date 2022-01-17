@@ -9,4 +9,4 @@ jobs:
       id: hello
       uses: nooose/custom-slack-message@master
       with:
-        slack_url: test
+        slack-url: testtest

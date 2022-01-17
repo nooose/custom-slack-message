@@ -1,8 +1,10 @@
 name: 'Hello World'               # action 이름
 description: 'Greet someone'      # 간단한 설명
 inputs:
-  slack_url:
-  required: true
+  slack-url:                   # id of input    
+    description: 'Who to greet'
+    required: true
+    default: 'World'
 runs:
   using: 'docker'                 # 도커 사용 명시
   image: 'Dockerfile'             # Dockerfile을 이용하여 이미지 생성
