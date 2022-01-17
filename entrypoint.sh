@@ -9,6 +9,7 @@ echo "PR_NUMBER" $PR_NUMBER
 
 
 
+
 # pr
 if [ $TYPE == "pr" ]; then
 COLOR=\#A0A0A0
