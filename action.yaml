@@ -15,7 +15,7 @@ inputs:
     default: ''
   repo_name:
     required: false
-    default: ''
+    default: ${{ github.repository }}
   job_status:
     requried: false
     default: ''
@@ -28,3 +28,4 @@ runs:
     - ${{ inputs.slack_webhook }}
     - ${{ inputs.token }}
     - ${{ inputs.pr_number }}
+    - ${{ inputs.repo_name }}
