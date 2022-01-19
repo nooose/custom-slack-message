@@ -1,11 +1,11 @@
-#!/bin/sh -l
+#!/bin/sh
 
-# TYPE
-# SLACK_WEBHOOK
-# TOKEN
+# ENV 
+TYPE=$1
+SLACK_WEBHOOK=$2
+TOKEN=$3
+PR_NUMBER=$4
 
-
-# pr
 
 if [ $TYPE == "pr" ]; then
 PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
