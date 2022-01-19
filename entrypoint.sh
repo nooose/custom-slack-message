@@ -244,7 +244,7 @@ cat << EOF > payload.json
                                 "text": "*Action URL*"
                             },
                             {
-                                "type": "plain_text",
+                                "type": "mrkdwn",
                                 "text": "\`$BRANCH_NAME\`"
                             },
                             {
