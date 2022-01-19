@@ -5,6 +5,7 @@ TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
 PR_NUMBER=$4
+REPO_NAME=$5
 
 
 if [ $TYPE == "pr" ]; then
