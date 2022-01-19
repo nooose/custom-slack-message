@@ -12,10 +12,10 @@ inputs:
     default: ''
   pr_number: 
     required: false
-    default: ${{ github.event.number }}
+    default: 
   repo_name:
     required: false
-    default: ${{ github.repository }}
+    default: ''
   job_status:
     requried: false
     default: ''
@@ -27,3 +27,5 @@ runs:
     - ${{ inputs.type }}
     - ${{ inputs.slack_webhook }}
     - ${{ inputs.token }}
+    - ${{ github.repository }}
+    - ${{ github.event.number }}
