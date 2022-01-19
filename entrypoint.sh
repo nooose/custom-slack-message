@@ -245,7 +245,7 @@ cat << EOF > payload.json
                             },
                             {
                                 "type": "plain_text",
-                                "text": "$BRANCH_NAME"
+                                "text": "\`$BRANCH_NAME\`"
                             },
                             {
                                 "type": "mrkdwn",
