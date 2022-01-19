@@ -215,7 +215,6 @@ elif [ "$TYPE" == "build" ]; then
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-    # ACTION_URL=${GITHUB_ACTION_PATH}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
     if [ -z $TITLE ]; then
@@ -267,9 +266,7 @@ EOF
 elif [ $TYPE == "deploy" ]; then
 
     REPO_NAME=${GITHUB_REPOSITORY}
-    BRANCH_NAME=${GITHUB_REF##*heads/}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-    # ACTION_URL=${GITHUB_ACTION_PATH}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
     if [ -z $TITLE ]; then
