@@ -27,5 +27,5 @@ runs:
     - ${{ inputs.type }}
     - ${{ inputs.slack_webhook }}
     - ${{ inputs.token }}
-    - ${{ github.repository }}
-    - ${{ github.event.number }}
+    - ${{ inputs.repo_name }}
+    - ${{ inputs.pr_number}}
