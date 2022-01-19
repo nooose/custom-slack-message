@@ -4,6 +4,13 @@
 TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
+COLOR=$4
+
+if [ $COLOR == "success" ]; then
+    COLOR=2EB886
+else
+    COLOR=CC0000
+fi
 
 
 create_review_field_func() {
@@ -205,7 +212,6 @@ elif [ $TYPE == "build" ]; then
     BRANCH_NAME=${GITHUB_REF##*heads/}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}/checks
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
-    COLOR=\#A0A0A0
 
 cat << EOF > payload.json
     {
