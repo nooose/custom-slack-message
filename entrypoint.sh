@@ -6,6 +6,7 @@ SLACK_WEBHOOK=$2
 TOKEN=$3
 PR_NUMBER=$4
 COLOR=$5
+TITLE=$6
 
 
 if [ $COLOR == "success" ]; then
@@ -133,7 +134,7 @@ if [ $TYPE == "pr" ]; then
                     -H "Authorization: Bearer $TOKEN")                
 
     PR_URL=$(echo $PR_RESULT | jq -r .html_url)
-    SERVICE=$(echo $PR_RESULT | jq .head.repo.name)
+    SERVICE=$(echo $PR_RESULT | jq -r .head.repo.name)
     BASE=$(echo $PR_RESULT | jq -r .base.ref)
     HEAD=$(echo $PR_RESULT | jq -r .head.ref)
     PR_CREATOR=$(echo $PR_RESULT | jq .user.login)
@@ -155,7 +156,7 @@ cat << EOF > payload.json
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": $SERVICE
+                        "text": "$SERVICE $TITLE"
                     }
                 },
                 {
@@ -213,7 +214,7 @@ elif [ "$TYPE" == "build" ]; then
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
-    ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/runs/${GITHUB_RUN_ID}
+    ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
     # ACTION_URL=${GITHUB_ACTION_PATH}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
@@ -225,10 +226,10 @@ cat << EOF > payload.json
                 "color": "$COLOR",
                 "blocks": [
                     {
-                        "type": "section",
+                        "type": "header",
                         "text": {
-                            "type": "mrkdwn",
-                            "text": "*\`$SERVICE_NAME\` 빌드*"
+                            "type": "plain_text",
+                            "text": "$SERVICE_NAME 빌드 $TITLE" 
                         }
                     },
                     {
@@ -248,7 +249,7 @@ cat << EOF > payload.json
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": "<$ACTION_URL|*$GITHUB_WORKFLOW*>"
+                                "text": "<$ACTION_URL|$GITHUB_WORKFLOW>"
                             }
                         ]
                     }
@@ -257,7 +258,6 @@ cat << EOF > payload.json
         ]
     }
 EOF
-
     
 
 elif [ $TYPE == "helm" ]; then
