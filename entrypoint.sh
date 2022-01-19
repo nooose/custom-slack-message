@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # ENV 
 TYPE=$1
@@ -204,7 +204,7 @@ EOF
 
     add_reviewer_func
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
-
+    echo [INFO] GITHUB_ENV_TEST ${GITHUB_REF##*heads/}
 
 elif [ $TYPE == "build" ]; then
     echo $TYPE 
