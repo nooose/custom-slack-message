@@ -4,21 +4,6 @@
 TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
-PR_NUMBER=$4
-
-GITHUB_BRANCH=${GITHUB_REF##*heads/}
-REPO_NAME=${GITHUB_REPOSITORY}
-GITHUB_ACTION=${GITHUB_ACTION}
-
-echo [INFO] TYPE $1
-echo [INFO] SLACK_WEBHOOK $2
-echo [INFO] TOKEN $3
-echo [INFO] REPO_NAME $REPO_NAME
-echo [INFO] PR_NUMBER $PR_NUMBER
-echo [INFO] BRANCH $GITHUB_BRANCH
-echo [INFO] ACTION $GITHUB_ACTION
-
-
 
 
 create_review_field_func() {
@@ -124,9 +109,10 @@ add_reviewer_func() {
 
 
 
-
-
 if [ $TYPE == "pr" ]; then
+
+    REPO_NAME=${GITHUB_REPOSITORY}
+    PR_NUMBER=$4
     PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
     PR_REVIEW_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/reviews
     PR_RESULT=$(curl $PR_API \
@@ -210,7 +196,60 @@ EOF
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
 
 elif [ $TYPE == "build" ]; then
-    echo $TYPE 
+    
+    # 상태 값 체크 함수 (반환 색상값)
+
+
+    REPO_NAME=${GITHUB_REPOSITORY}
+    SERVICE_NAME=$(basename $REPO_NAME)
+    BRANCH_NAME=${GITHUB_REF##*heads/}
+    ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}/checks
+    GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
+    COLOR=\#A0A0A0
+
+cat << EOF > payload.json
+    {
+        "attachments": 
+        [
+            {
+                "color": "$COLOR",
+                "blocks": [
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "*`$SERVICE_NAME` 빌드*"
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "fields": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "*브랜치*"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Action URL*"
+                            },
+                            {
+                                "type": "plain_text",
+                                "text": "$BRANCH_NAME"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "<$ACTION_URL|*$GITHUB_WORKFLOW*>"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+EOF
+
+    
+
 elif [ $TYPE == "helm" ]; then
     echo $TYPE
 else
