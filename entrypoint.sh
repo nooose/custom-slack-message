@@ -111,10 +111,12 @@ EOF
 # Approved 상태인 리뷰 length가 0 보다 큰 경우 진행
     APPROVED_REVIEWS=$(echo $PR_REVIEW_RESULT | jq '.[] | select(.state == "APPROVED") | [.user.login, .user.avatar_url]' | jq -c | uniq)
     REVIEWS_SIZE=$(echo $APPROVED)
-    if [ $APPROVED_SIZE -gt 0 ]; then
-        # JQ 추가
-
-    fi
+    
+    echo [INFO] APPROVED_REVIEWS $APPROVED_REVIEWS
+    # if [ $APPROVED_SIZE -gt 0 ]; then
+    #     # JQ 추가
+    #     echo [INFO] JQ 추가
+    # fi
 
 
 elif [ $TYPE == "build" ]; then
