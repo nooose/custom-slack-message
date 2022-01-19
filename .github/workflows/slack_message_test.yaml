@@ -1,16 +1,18 @@
 on:
   pull_request:
-    branches:
-      - master
+    branches: [ main, release/*, develop ]
     types: [ closed ]
 
 jobs:
   slack:
+  if: 
     runs-on: ubuntu-latest
     steps:
+
+
     - name: test message
       uses: nooose/custom-slack-message@master
       with:
-        SLACK_WEBHOOK: http://slack.webhook.url
-        TYPE: PR
-        PR_NUMBER: ${{ github.event.number }}
+        type: pr
+        slack_webhook: http://slack.webhook.url
+        pr_number: ${{ github.event.number }}

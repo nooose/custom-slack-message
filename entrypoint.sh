@@ -1,29 +1,32 @@
 #!/bin/sh -l
 
-SLACK_WEBHOOK=$1
-TYPE=$2
-PR_NUMBER=$3
-
-
-echo "SLACK_WEBHOOK" $SLACK_WEBHOOK
-echo "TYPE" $TYPE
-echo "PR_NUMBER" $PR_NUMBER
+# TYPE
+# SLACK_WEBHOOK
+# TOKEN
 
 
 # pr
-# if [ $TYPE == "pr" ]; then
-PR_RESULT=$(curl https://api.github.com/repos/nooose/custom-slack-message/pulls/$PR_NUMBER \
-                -H "Accept: application/vnd.github.v3+json")
 
-echo RESPONSE $PR_RESULT
-HEAD=$(echo $PR_RESULT | jq .head.ref)
-BASE=$(echo $PR_RESULT | jq .base.ref)
-echo HEAD $HEAD
-echo BASE $BASE
+if [ $TYPE == "pr" ]; then
+PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
+PR_REVIEW_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/reviews
+PR_RESULT=$(curl $PR_API \
+                -H "Accept: application/vnd.github.v3+json" \
+                -H "Authorization: Bearer $TOKEN")
+PR_REVIEW_RESULT=$(curl $PR_REVIEW_API \
+                -H "Accept: application/vnd.github.v3+json" \
+                -H "Authorization: Bearer $TOKEN")                
 
+PR_URL=$(echo $PR_RESULT | jq -r .html_url)
+SERVICE=$(echo $PR_RESULT | jq .head.repo.name)
+BASE=$(echo $PR_RESULT | jq -r .base.ref)
+HEAD=$(echo $PR_RESULT | jq -r .head.ref)
+PR_CREATOR=$(echo $PR_RESULT | jq .user.login)
+PR_CREATOR_AVATAR=$(echo $PR_RESULT | jq .user.avatar_url)
+PR_TITLE=$(echo $PR_RESULT | jq -r .title)
+MERGED_BY=$(echo $PR_RESULT | jq .merged_by.login)
+MERGED_BY_AVATAR=$(echo $PR_RESULT | jq .merged_by.avatar_url)
 
-# pr
-# if [ $TYPE == "pr" ]; then
 
 COLOR=\#A0A0A0
 cat << EOF > payload.json
@@ -36,21 +39,21 @@ cat << EOF > payload.json
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": "test-service"
+                        "text": $SERVICE
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*\`develop\`*  :arrow_left:  *\`api/*\`*"
+                        "text": "*\`$BASE\`*   :arrow_left:   *\`$HEAD\`*"
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "<https://google.com|*PR 메시지*>"
+                        "text": "<$PR_URL|*$PR_TITLE*>"
                     }
                 },
                 {
@@ -60,15 +63,20 @@ cat << EOF > payload.json
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*PR 생성자*"
+                        "text": "*PR 생성*"
                     }
                 },
                 {
                     "type": "context",
                     "elements": [
                         {
+                            "type": "image",
+                            "image_url": $PR_CREATOR_AVATAR,
+                            "alt_text": ""
+                        },
+                        {
                             "type": "plain_text",
-                            "text": "성준혁"
+                            "text": $PR_CREATOR
                         }
                     ]
                 },
@@ -76,23 +84,20 @@ cat << EOF > payload.json
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*PR 승인자*"
+                        "text": "*Merged by*"
                     }
                 },
                 {
                     "type": "context",
                     "elements": [
                         {
-                            "type": "plain_text",
-                            "text": "성준혁"
+                            "type": "image",
+                            "image_url": $MERGED_BY_AVATAR,
+                            "alt_text": ""
                         },
                         {
                             "type": "plain_text",
-                            "text": "성준혁"
-                        },
-                        {
-                            "type": "plain_text",
-                            "text": "성준혁"
+                            "text": $MERGED_BY
                         }
                     ]
                 }
@@ -102,9 +107,26 @@ cat << EOF > payload.json
 }
 EOF
 
+# 리뷰어 추가
+# Approved 상태인 리뷰 length가 0 보다 큰 경우 진행
+    APPROVED_REVIEWS=$(echo $PR_REVIEW_RESULT | jq '.[] | select(.state == "APPROVED") | [.user.login, .user.avatar_url]' | jq -c | uniq)
+    REVIEWS_SIZE=$(echo $APPROVED)
+    if [ $APPROVED_SIZE -gt 0 ]; then
+        # JQ 추가
+        
+    fi
 
-# else if [ $TYPE == "build" ]; then
-#     echo $TYPE 
-# else if [ $TYPE == "helm" ]; then
-#     echo $TYPE
-# fi
+
+else if [ $TYPE == "build" ]; then
+    echo $TYPE 
+else if [ $TYPE == "helm" ]; then
+    echo $TYPE
+else
+    return 1;
+fi
+
+curl -s $SLACK_WEBHOOK \
+     -d @payload.json
+    
+
+
