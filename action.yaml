@@ -19,6 +19,9 @@ inputs:
   title:
     required: false
     default: ''
+  environment:
+    required: false
+    default: ''
 
 runs:
   using: 'docker'                 # 도커 사용 명시
@@ -30,3 +33,4 @@ runs:
     - ${{ inputs.pr_number}}
     - ${{ inputs.slack_color }}
     - ${{ inputs.title }}
+    - ${{ inputs.environment }}
