@@ -7,6 +7,7 @@ TOKEN=$3
 PR_NUMBER=$4
 COLOR=$5
 TITLE=$6
+ENVIRONMENT=$7
 
 
 if [ $COLOR == "success" ]; then
@@ -264,7 +265,57 @@ EOF
     
 
 elif [ $TYPE == "deploy" ]; then
-    
+
+    REPO_NAME=${GITHUB_REPOSITORY}
+    BRANCH_NAME=${GITHUB_REF##*heads/}
+    ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+    # ACTION_URL=${GITHUB_ACTION_PATH}
+    GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
+
+    if [ -z $TITLE ]; then
+        TITLE=배포
+    fi
+
+cat << EOF > payload.json
+    {
+        "attachments": 
+        [
+            {
+                "color": "$COLOR",
+                "blocks": [
+                    {
+                        "type": "header",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "$TITLE" 
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "fields": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "*브랜치*"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Action URL*"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "\`$BRANCH_NAME\`"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "<$ACTION_URL|$GITHUB_WORKFLOW>"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+EOF
 
 
 
