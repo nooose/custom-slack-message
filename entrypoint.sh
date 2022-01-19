@@ -4,10 +4,12 @@
 TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
-COLOR=$4
+COLOR=$5
 echo [INFO] COLOR $COLOR
 
 if [ $COLOR == "success" ]; then
+    COLOR=\#2EB886
+elif [ -z $COLOR ]; then
     COLOR=\#2EB886
 else
     COLOR=\#CC0000
