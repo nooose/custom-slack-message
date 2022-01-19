@@ -114,10 +114,10 @@ EOF
     REVIEWS_SIZE=$(echo $APPROVED)
     
     echo [INFO] APPROVED_REVIEWS $APPROVED_REVIEWS
-    # if [ $APPROVED_SIZE -gt 0 ]; then
-    #     # JQ 추가
-    #     echo [INFO] JQ 추가
-    # fi
+    if [ $APPROVED_SIZE -gt 0 ]; then
+        # JQ 추가
+        echo [INFO] JQ 추가
+    fi
 
 
 elif [ $TYPE == "build" ]; then
