@@ -10,7 +10,7 @@ inputs:
   token:
     required: true
     default: ''
-  job_status:
+  pr_number:
     requried: false
     default: ''
 
@@ -21,3 +21,4 @@ runs:
     - ${{ inputs.type }}
     - ${{ inputs.slack_webhook }}
     - ${{ inputs.token }}
+    - ${{ inputs.pr_number}}
