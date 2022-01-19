@@ -4,8 +4,9 @@
 TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
+PR_NUMBER=$4
 COLOR=$5
-echo [INFO] COLOR $COLOR
+
 
 if [ $COLOR == "success" ]; then
     COLOR=\#2EB886
@@ -122,7 +123,6 @@ add_reviewer_func() {
 if [ $TYPE == "pr" ]; then
 
     REPO_NAME=${GITHUB_REPOSITORY}
-    PR_NUMBER=$4
     PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
     PR_REVIEW_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/reviews
     PR_RESULT=$(curl $PR_API \
@@ -213,7 +213,8 @@ elif [ "$TYPE" == "build" ]; then
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
-    ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}/checks
+    ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/runs/${GITHUB_ACTION}
+    # ACTION_URL=${GITHUB_ACTION_PATH}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
 cat << EOF > payload.json
