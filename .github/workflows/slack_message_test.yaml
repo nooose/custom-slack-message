@@ -13,6 +13,7 @@ jobs:
     - name: test message
       uses: nooose/custom-slack-message@master
       with:
-        type: pr
+        type: deploy
         slack_webhook: http://slack.webhook.url
+        token: 
         pr_number: ${{ github.event.number }}
