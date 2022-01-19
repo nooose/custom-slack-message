@@ -10,8 +10,9 @@ REPO_NAME=$5
 echo [INFO] TYPE $1
 echo [INFO] SLACK_WEBHOOK $2
 echo [INFO] TOKEN $3
-echo [INFO] PR_NUMBER $4
-echo [INFO] REPO_NAME $5
+echo [INFO] REPO_NAME $4
+echo [INFO] PR_NUMBER $5
+
 
 
 
