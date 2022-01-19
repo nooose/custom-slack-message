@@ -23,7 +23,7 @@ inputs:
 runs:
   using: 'docker'                 # 도커 사용 명시
   image: 'Dockerfile'             # Dockerfile을 이용하여 이미지 생성
-  ENV: 
+  env: 
     type: ${{ inputs.type }}
     slack_webhook: ${{ inputs.slack_webhook }}
     token: ${{ inputs.token }}
