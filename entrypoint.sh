@@ -6,7 +6,7 @@ SLACK_WEBHOOK=$2
 TOKEN=$3
 COLOR=$4
 
-if [ $COLOR == "success" ]; then
+if [ "$COLOR" = "success" ]; then
     COLOR=2EB886
 else
     COLOR=CC0000
@@ -116,7 +116,7 @@ add_reviewer_func() {
 
 
 
-if [ $TYPE == "pr" ]; then
+if [ "$TYPE" = "pr" ]; then
 
     REPO_NAME=${GITHUB_REPOSITORY}
     PR_NUMBER=$4
@@ -202,7 +202,7 @@ EOF
     add_reviewer_func
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
 
-elif [ $TYPE == "build" ]; then
+elif [ "$TYPE" = "build" ]; then
     
     # 상태 값 체크 함수 (반환 색상값)
 
@@ -256,7 +256,7 @@ EOF
 
     
 
-elif [ $TYPE == "helm" ]; then
+elif [ "$TYPE" = "helm" ]; then
     echo $TYPE
 else
     return 1;
