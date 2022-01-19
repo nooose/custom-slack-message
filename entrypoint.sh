@@ -113,13 +113,13 @@ EOF
     REVIEWS_SIZE=$(echo $APPROVED)
     if [ $APPROVED_SIZE -gt 0 ]; then
         # JQ 추가
-        
+
     fi
 
 
-else if [ $TYPE == "build" ]; then
+elif [ $TYPE == "build" ]; then
     echo $TYPE 
-else if [ $TYPE == "helm" ]; then
+elif [ $TYPE == "helm" ]; then
     echo $TYPE
 else
     return 1;
