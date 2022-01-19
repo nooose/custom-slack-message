@@ -6,7 +6,7 @@ SLACK_WEBHOOK=$2
 TOKEN=$3
 COLOR=$4
 
-if [ $COLOR == "success" ]; then
+if [ $COLOR = "success" ]; then
     COLOR=2EB886
 else
     COLOR=CC0000
@@ -224,7 +224,7 @@ cat << EOF > payload.json
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "*`$SERVICE_NAME` 빌드*"
+                            "text": "*\`$SERVICE_NAME\` 빌드*"
                         }
                     },
                     {
