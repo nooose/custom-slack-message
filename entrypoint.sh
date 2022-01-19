@@ -6,7 +6,7 @@ SLACK_WEBHOOK=$2
 TOKEN=$3
 COLOR=$4
 
-if [ $COLOR = "success" ]; then
+if [ $COLOR == "success" ]; then
     COLOR=2EB886
 else
     COLOR=CC0000
@@ -140,7 +140,7 @@ if [ $TYPE == "pr" ]; then
     MERGED_BY_AVATAR=$(echo $PR_RESULT | jq .merged_by.avatar_url)
 
 
-    COLOR=\#A0A0A0
+    # COLOR=\#A0A0A0
 
 cat << EOF > payload.json
 {
