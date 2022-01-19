@@ -4,15 +4,15 @@
 TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
-REPO_NAME=$4
-PR_NUMBER=$5
+REPO_NAME=${github.repository}
+PR_NUMBER=${github.event.number}
 
 
 echo [INFO] TYPE $1
 echo [INFO] SLACK_WEBHOOK $2
 echo [INFO] TOKEN $3
-echo [INFO] REPO_NAME $4
-echo [INFO] PR_NUMBER $5
+echo [INFO] REPO_NAME $REPO_NAME
+echo [INFO] PR_NUMBER $PR_NUMBER
 
 
 
@@ -204,7 +204,6 @@ EOF
 
     add_reviewer_func
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
-    echo [INFO] GITHUB_ENV_TEST ${GITHUB_REF##*heads/}
 
 elif [ $TYPE == "build" ]; then
     echo $TYPE 
