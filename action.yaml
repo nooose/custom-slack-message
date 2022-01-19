@@ -16,6 +16,9 @@ inputs:
   slack_color:
     required: false
     default: ''
+  title:
+    required: false
+    default: ''
 
 runs:
   using: 'docker'                 # 도커 사용 명시
@@ -26,3 +29,4 @@ runs:
     - ${{ inputs.token }}
     - ${{ inputs.pr_number}}
     - ${{ inputs.slack_color }}
+    - ${{ inputs.title }}
