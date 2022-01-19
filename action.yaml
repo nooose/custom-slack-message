@@ -11,7 +11,10 @@ inputs:
     required: true
     default: ''
   pr_number:
-    requried: false
+    required: false
+    default: ''
+  slack_color:
+    required: false
     default: ''
 
 runs:
@@ -22,3 +25,4 @@ runs:
     - ${{ inputs.slack_webhook }}
     - ${{ inputs.token }}
     - ${{ inputs.pr_number}}
+    - ${{ inputs.slack_color }}
