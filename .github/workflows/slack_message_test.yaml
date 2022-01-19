@@ -8,12 +8,11 @@ jobs:
   if: 
     runs-on: ubuntu-latest
     steps:
-
-
-    - name: test message
-      uses: nooose/custom-slack-message@master
-      with:
-        type: deploy
-        slack_webhook: http://slack.webhook.url
-        token: 
-        pr_number: ${{ github.event.number }}
+    
+      - name: slack message
+        uses: nooose/custom-slack-message@master
+        with:
+          type: pr
+          slack_webhook: 
+          token: 
+          slack_color: ${{ job.status }}
