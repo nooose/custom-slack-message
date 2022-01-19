@@ -7,6 +7,13 @@ TOKEN=$3
 PR_NUMBER=$4
 REPO_NAME=$5
 
+echo [INFO] TYPE $1
+echo [INFO] SLACK_WEBHOOK $2
+echo [INFO] TOKEN $3
+echo [INFO] PR_NUMBER $4
+echo [INFO] REPO_NAME $5
+
+
 
 if [ $TYPE == "pr" ]; then
 PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
