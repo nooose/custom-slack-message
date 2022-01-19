@@ -273,7 +273,7 @@ elif [ $TYPE == "deploy" ]; then
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
     if [ -z $TITLE ]; then
-        TITLE=배포
+        TITLE=Deploy
     fi
 
 cat << EOF > payload.json
@@ -295,7 +295,7 @@ cat << EOF > payload.json
                         "fields": [
                             {
                                 "type": "mrkdwn",
-                                "text": "*브랜치*"
+                                "text": "*환경*"
                             },
                             {
                                 "type": "mrkdwn",
@@ -303,7 +303,7 @@ cat << EOF > payload.json
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": "\`$BRANCH_NAME\`"
+                                "text": "\`$ENVIRONMENT\`"
                             },
                             {
                                 "type": "mrkdwn",
