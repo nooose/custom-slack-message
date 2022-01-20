@@ -213,8 +213,6 @@ EOF
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
 
 elif [ "$TYPE" == "build" ]; then
-    echo [INFO] 테스트 $IMAGE_NAME
-
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
@@ -227,7 +225,7 @@ elif [ "$TYPE" == "build" ]; then
     COMMIT_RESULT=$(curl $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN")
-    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq .commit.message)   
+    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)   
 
 
     if [ -z $TITLE ]; then
@@ -294,7 +292,7 @@ elif [ $TYPE == "deploy" ]; then
     COMMIT_RESULT=$(curl $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN")
-    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq .commit.message)
+    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
 
     if [ -z $TITLE ]; then
         TITLE=${SERVICE_NAME}-배포
