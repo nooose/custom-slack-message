@@ -14,9 +14,9 @@ if [ $COLOR == "success" ]; then
     COLOR=\#2EB886
 elif [ -z $COLOR ]; then
     COLOR=\#2EB886
-elif [ $COLOR == "failure" ]
+elif [ $COLOR == "failure" ]; then
     COLOR=\#CC0000
-elif [ $COLOR == "cancelled" ]
+elif [ $COLOR == "cancelled" ]; then
     COLOR=\#A0A0A0
 fi
 
