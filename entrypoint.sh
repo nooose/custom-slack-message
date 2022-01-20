@@ -161,8 +161,9 @@ cat << EOF > payload.json
                 {
                     "type": "header",
                     "text": {
-                        "type": "mrkdwn",
-                        "text": "$TITLE :github:"
+                        "type": "plain_text",
+                        "text": "$TITLE :github:",
+                        "emoji": true
                     }
                 },
                 {
@@ -245,7 +246,8 @@ cat << EOF > payload.json
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": "$TITLE" 
+                            "text": "$TITLE :whale:",
+                            "emoji": true
                         }
                     },
                     {
@@ -313,7 +315,8 @@ cat << EOF > payload.json
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": "$TITLE" 
+                            "text": "$TITLE :octopus:",
+                            "emoji": true
                         }
                     },
                     {
