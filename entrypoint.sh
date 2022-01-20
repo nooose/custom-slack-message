@@ -224,7 +224,7 @@ elif [ "$TYPE" == "build" ]; then
     
     COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
     COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
-    COMMIT_RESULT=$(curl $API \
+    COMMIT_RESULT=$(curl $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN")
     COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq .commit.message)   
@@ -291,7 +291,7 @@ elif [ $TYPE == "deploy" ]; then
 
     COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
     COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
-    COMMIT_RESULT=$(curl $API \
+    COMMIT_RESULT=$(curl $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN")
     COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq .commit.message)
