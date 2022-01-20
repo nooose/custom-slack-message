@@ -274,7 +274,7 @@ elif [ $TYPE == "deploy" ]; then
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
     if [ -z $TITLE ]; then
-        TITLE=Deploy
+        TITLE=${SERVICE_NAME}-배포
     fi
 
 cat << EOF > payload.json
