@@ -10,9 +10,9 @@ TITLE=$6
 ENVIRONMENT=$7
 
 
-if [ $COLOR == "success" ]; then
+if [ -z $COLOR ]; then
     COLOR=\#2EB886
-elif [ -z $COLOR ]; then
+elif [ $COLOR == "success" ]; then
     COLOR=\#2EB886
 elif [ $COLOR == "failure" ]; then
     COLOR=\#CC0000
