@@ -172,13 +172,15 @@ cat << EOF > payload.json
                         "text": "*\`$BASE\`*   :arrow_left:   *\`$HEAD\`*"
                     }
                 },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "<$PR_URL|*$PR_TITLE*>"
-                    }
-                },
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "$PR_TITLE\n<$PR_URL|확인>"
+                            }
+                        ]
+                    },
                 {
                     "type": "divider"
                 },
