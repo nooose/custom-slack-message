@@ -247,12 +247,14 @@ cat << EOF > payload.json
                         }
                     },
                     {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "<${COMMIT_URL}|${COMMIT_MESSAGE}>"
-                        }
-				    },
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "${COMMIT_MESSAGE}\n<${COMMIT_URL|확인>"
+                            }
+                        ]
+                    },
                     {
                         "type": "section",
                         "fields": [
@@ -313,12 +315,14 @@ cat << EOF > payload.json
                         }
                     },
                     {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "<${COMMIT_URL}|${COMMIT_MESSAGE}>"
-                        }
-				    },
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "${COMMIT_MESSAGE}\n<${COMMIT_URL|확인>"
+                            }
+                        ]
+                    },
                     {
                         "type": "section",
                         "fields": [
