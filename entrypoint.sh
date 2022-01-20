@@ -251,7 +251,7 @@ cat << EOF > payload.json
                         "elements": [
                             {
                                 "type": "mrkdwn",
-                                "text": "${COMMIT_MESSAGE}\n<${COMMIT_URL|확인>"
+                                "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|확인>"
                             }
                         ]
                     },
@@ -319,7 +319,7 @@ cat << EOF > payload.json
                         "elements": [
                             {
                                 "type": "mrkdwn",
-                                "text": "${COMMIT_MESSAGE}\n<${COMMIT_URL|확인>"
+                                "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|확인>"
                             }
                         ]
                     },
