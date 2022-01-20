@@ -213,6 +213,8 @@ EOF
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
 
 elif [ "$TYPE" == "build" ]; then
+    echo [INFO] 테스트 $IMAGE_NAME
+
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
