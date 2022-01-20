@@ -221,6 +221,15 @@ elif [ "$TYPE" == "build" ]; then
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
+    
+    COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
+    COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
+    COMMIT_RESULT=$(curl $API \
+                         -H "Accept: application/vnd.github.v3+json" \
+                         -H "Authorization: Bearer $TOKEN")
+    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq .commit.message)   
+
+
     if [ -z $TITLE ]; then
         TITLE=$SERVICE_NAME-빌드
     fi
@@ -239,6 +248,13 @@ cat << EOF > payload.json
                             "text": "$TITLE" 
                         }
                     },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "<$COMMIT_URL|$COMMIT_MESSAGE>"
+                        }
+				    },
                     {
                         "type": "section",
                         "fields": [
@@ -273,6 +289,13 @@ elif [ $TYPE == "deploy" ]; then
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
 
+    COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
+    COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
+    COMMIT_RESULT=$(curl $API \
+                         -H "Accept: application/vnd.github.v3+json" \
+                         -H "Authorization: Bearer $TOKEN")
+    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq .commit.message)
+
     if [ -z $TITLE ]; then
         TITLE=${SERVICE_NAME}-배포
     fi
@@ -291,6 +314,13 @@ cat << EOF > payload.json
                             "text": "$TITLE" 
                         }
                     },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "<$COMMIT_URL|$COMMIT_MESSAGE>"
+                        }
+				    },
                     {
                         "type": "section",
                         "fields": [
