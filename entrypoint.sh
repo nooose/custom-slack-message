@@ -161,8 +161,8 @@ cat << EOF > payload.json
                 {
                     "type": "header",
                     "text": {
-                        "type": "plain_text",
-                        "text": "$TITLE"
+                        "type": "mrkdwn",
+                        "text": "$TITLE :github:"
                     }
                 },
                 {
