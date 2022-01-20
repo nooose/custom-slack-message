@@ -14,8 +14,10 @@ if [ $COLOR == "success" ]; then
     COLOR=\#2EB886
 elif [ -z $COLOR ]; then
     COLOR=\#2EB886
-else
+elif [ $COLOR == "failure" ]
     COLOR=\#CC0000
+elif [ $COLOR == "cancelled" ]
+    COLOR=\#A0A0A0
 fi
 
 
@@ -313,12 +315,6 @@ cat << EOF > payload.json
         ]
     }
 EOF
-
-
-
-
-
-
 
 else
     return 1;
