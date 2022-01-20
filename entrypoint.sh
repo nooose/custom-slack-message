@@ -162,7 +162,7 @@ cat << EOF > payload.json
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": "$TITLE :github:",
+                        "text": ":github: $TITLE",
                         "emoji": true
                     }
                 },
@@ -246,7 +246,7 @@ cat << EOF > payload.json
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": "$TITLE :whale:",
+                            "text": ":whale: $TITLE",
                             "emoji": true
                         }
                     },
@@ -315,7 +315,7 @@ cat << EOF > payload.json
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": "$TITLE :octopus:",
+                            "text": ":octopus: $TITLE",
                             "emoji": true
                         }
                     },
