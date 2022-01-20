@@ -250,7 +250,7 @@ cat << EOF > payload.json
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "<$COMMIT_URL|$COMMIT_MESSAGE>"
+                            "text": "<${COMMIT_URL}|${COMMIT_MESSAGE}>"
                         }
 				    },
                     {
@@ -316,7 +316,7 @@ cat << EOF > payload.json
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "<$COMMIT_URL|$COMMIT_MESSAGE>"
+                            "text": "<${COMMIT_URL}|${COMMIT_MESSAGE}>"
                         }
 				    },
                     {
