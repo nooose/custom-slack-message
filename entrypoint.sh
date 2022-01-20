@@ -246,7 +246,7 @@ cat << EOF > payload.json
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": ":whale: $TITLE",
+                            "text": ":docker: $TITLE",
                             "emoji": true
                         }
                     },
