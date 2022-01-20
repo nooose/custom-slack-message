@@ -32,7 +32,7 @@ cat << EOF > review_field.json
     }
 EOF
     REVIEW_FIELD_PAYLOAD=$(<review_field.json)
-    jq ".attachments[].blocks += [$REVIEW_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".blocks += [$REVIEW_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
 }
 
@@ -58,7 +58,7 @@ cat << EOF > reviewer.json
     }
 EOF
     REVIEWR_PAYLOAD=$(<reviewer.json)
-    jq ".attachments[].blocks += [$REVIEWR_PAYLOAD]" payload.json > tmp.json
+    jq ".blocks += [$REVIEWR_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
 }
 
@@ -90,7 +90,7 @@ cat << EOF > merged_field.json
     }
 EOF
     MERGED_FIELD_PAYLOAD=$(<merged_field.json)
-    jq ".attachments[].blocks += [$MERGED_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".blocks += [$MERGED_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
 }
 
@@ -154,57 +154,52 @@ if [ $TYPE == "pr" ]; then
 
 cat << EOF > payload.json
 {
-    "attachments": [
+    "blocks": [
         {
-            "color": "${COLOR}",
-            "blocks": [
-                {
-                    "type": "header",
-                    "text": {
-                        "type": "plain_text",
-                        "text": ":github: $TITLE",
-                        "emoji": true
-                    }
-                },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "*\`$BASE\`*   :arrow_left:   *\`$HEAD\`*"
-                    }
-                },
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": ":github: $TITLE",
+                "emoji": true
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "*\`$BASE\`*   :arrow_left:   *\`$HEAD\`*"
+            }
+        },
+            {
+                "type": "context",
+                "elements": [
                     {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "$PR_TITLE\n<$PR_URL|확인>"
-                            }
-                        ]
-                    },
-                {
-                    "type": "divider"
-                },
-                {
-                    "type": "section",
-                    "text": {
                         "type": "mrkdwn",
-                        "text": "*PR 생성*"
+                        "text": "$PR_TITLE\n<$PR_URL|확인>"
                     }
+                ]
+            },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "*PR 생성*"
+            }
+        },
+        {
+            "type": "context",
+            "elements": [
+                {
+                    "type": "image",
+                    "image_url": $PR_CREATOR_AVATAR,
+                    "alt_text": ""
                 },
                 {
-                    "type": "context",
-                    "elements": [
-                        {
-                            "type": "image",
-                            "image_url": $PR_CREATOR_AVATAR,
-                            "alt_text": ""
-                        },
-                        {
-                            "type": "plain_text",
-                            "text": $PR_CREATOR
-                        }
-                    ]
+                    "type": "plain_text",
+                    "text": $PR_CREATOR
                 }
             ]
         }
