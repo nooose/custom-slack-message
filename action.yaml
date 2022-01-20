@@ -1,5 +1,5 @@
-name: 'Custom Slack Message'               # action 이름
-description: 'Slack Message'                # 간단한 설명
+name: 'Custom Slack Message'      
+description: 'Slack Message'      
 inputs:
   slack_webhook: 
     required: true
@@ -24,13 +24,13 @@ inputs:
     default: ''
 
 runs:
-  using: 'docker'                 # 도커 사용 명시
-  image: 'Dockerfile'             # Dockerfile을 이용하여 이미지 생성
+  using: 'docker'                 
+  image: 'Dockerfile'             
   args:
-    - ${{ inputs.type }}
+    - ${{ inputs.type }}  # pr, build, deploy
     - ${{ inputs.slack_webhook }}
-    - ${{ inputs.token }}
-    - ${{ inputs.pr_number}}
+    - ${{ inputs.token }} # git token
+    - ${{ inputs.pr_number}}  
     - ${{ inputs.slack_color }}
     - ${{ inputs.title }}
-    - ${{ inputs.environment }}
+    - ${{ inputs.environment }} 

@@ -8,7 +8,6 @@ jobs:
   if: 
     runs-on: ubuntu-latest
     steps:
-
       - name: slack message
         uses: nooose/custom-slack-message@master
         with:
