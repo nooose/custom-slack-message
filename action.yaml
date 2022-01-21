@@ -10,9 +10,6 @@ inputs:
   token:
     required: true
     default: ''
-  pr_number:
-    required: false
-    default: ''
   slack_color:
     required: false
     default: ''
@@ -29,8 +26,7 @@ runs:
   args:
     - ${{ inputs.type }}  # pr, build, deploy
     - ${{ inputs.slack_webhook }}
-    - ${{ inputs.token }} # git token
-    - ${{ inputs.pr_number}}  
+    - ${{ inputs.token }} # git token  
     - ${{ inputs.slack_color }}
     - ${{ inputs.title }}
     - ${{ inputs.environment }} 

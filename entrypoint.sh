@@ -4,10 +4,9 @@
 TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
-PR_NUMBER=$4
-COLOR=$5
-TITLE=$6
-ENVIRONMENT=$7
+COLOR=$4
+TITLE=$5
+ENVIRONMENT=$6
 
 
 if [ -z $COLOR ]; then
@@ -23,7 +22,9 @@ fi
 
 echo [INFO] EVENT $GITHUB_EVENT_PATH
 EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
-echo $EVENT_RESULT | jq .
+
+
+GITHUB_CONTEXT
 
 
 
@@ -133,6 +134,7 @@ add_reviewer_func() {
 if [ $TYPE == "pr" ]; then
 
     REPO_NAME=${GITHUB_REPOSITORY}
+    PR_NUMBER=$(echo $EVENT_RESULT | jq .number)
     PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
     PR_REVIEW_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/reviews
     PR_RESULT=$(curl -s $PR_API \
@@ -229,7 +231,9 @@ elif [ "$TYPE" == "build" ]; then
     COMMIT_RESULT=$(curl -s $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN")
-    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)   
+    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
+    
+       
 
 
     if [ -z $TITLE ]; then
