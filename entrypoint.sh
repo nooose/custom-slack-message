@@ -233,7 +233,7 @@ elif [ "$TYPE" == "build" ]; then
 
 
     if [ -z $TITLE ]; then
-        TITLE=$SERVICE_NAME-빌드
+        TITLE=$SERVICE_NAME 빌드
     fi
 
 cat << EOF > payload.json
@@ -302,7 +302,7 @@ elif [ $TYPE == "deploy" ]; then
     COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
 
     if [ -z $TITLE ]; then
-        TITLE=${SERVICE_NAME}-배포
+        TITLE=${SERVICE_NAME} 배포
     fi
 
 cat << EOF > payload.json
