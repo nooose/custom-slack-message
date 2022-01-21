@@ -1,6 +1,6 @@
 on:
   pull_request:
-    branches: [ main, release/*, develop ]
+    branches: [ none ]
     types: [ closed ]
 
 jobs:
