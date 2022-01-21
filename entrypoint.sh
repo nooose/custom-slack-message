@@ -20,7 +20,11 @@ elif [ $COLOR == "cancelled" ]; then
     COLOR=\#A0A0A0
 fi
 
+
+echo [INFO] EVENT $GITHUB_EVENT_PATH
 EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
+echo $EVENT_RESULT | jq .
+
 
 
 create_review_field_func() {
@@ -127,15 +131,13 @@ add_reviewer_func() {
 
 
 if [ $TYPE == "pr" ]; then
-    echo [INFO] PR EVENT $EVENT_RESULT | jq .
 
     REPO_NAME=${GITHUB_REPOSITORY}
     PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
     PR_REVIEW_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/reviews
-    
-    EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
-    PR_RESULT=$(echo $EVENT_RESULT | jq .pull_request)
-
+    PR_RESULT=$(curl -s $PR_API \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    -H "Authorization: Bearer $TOKEN")
     PR_REVIEW_RESULT=$(curl -s $PR_REVIEW_API \
                     -H "Accept: application/vnd.github.v3+json" \
                     -H "Authorization: Bearer $TOKEN")                
@@ -215,9 +217,6 @@ EOF
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
 
 elif [ "$TYPE" == "build" ]; then
-    
-    echo [INFO] BUILD EVENT $EVENT_RESULT | jq .
-
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
@@ -290,7 +289,6 @@ EOF
     
 
 elif [ $TYPE == "deploy" ]; then
-    echo [INFO] DEPLOY EVENT $EVENT_RESULT | jq .
 
     REPO_NAME=${GITHUB_REPOSITORY}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
