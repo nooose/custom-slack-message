@@ -24,10 +24,6 @@ echo [INFO] EVENT $GITHUB_EVENT_PATH
 EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
 
 
-GITHUB_CONTEXT
-
-
-
 create_review_field_func() {
 cat << EOF > review_field.json
     {
