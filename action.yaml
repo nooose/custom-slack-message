@@ -19,6 +19,10 @@ inputs:
   environment:
     required: false
     default: ''
+    
+branding:
+  icon: 'award'  
+  color: 'blue'
 
 runs:
   using: 'docker'                 
