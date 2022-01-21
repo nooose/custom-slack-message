@@ -133,7 +133,7 @@ if [ $TYPE == "pr" ]; then
     PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
     PR_REVIEW_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/reviews
     
-    EVENT_RESULT=$(<$GITHUB_EVENT_PATH.json)
+    EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
     PR_RESULT=$(echo $EVENT_RESULT | jq .pull_request)
 
     PR_REVIEW_RESULT=$(curl -s $PR_REVIEW_API \
