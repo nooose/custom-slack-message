@@ -21,6 +21,9 @@ elif [ $COLOR == "cancelled" ]; then
 fi
 
 
+echo TEST $GITHUB_EVENT_PATH
+
+
 create_review_field_func() {
 cat << EOF > review_field.json
     {
