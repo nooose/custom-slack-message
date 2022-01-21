@@ -316,7 +316,7 @@ cat << EOF > payload.json
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": ":kubernetes: $TITLE",
+                            "text": ":argo: :kubernetes: $TITLE",
                             "emoji": true
                         }
                     },
