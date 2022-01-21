@@ -171,7 +171,7 @@ cat << EOF > payload.json
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": "*\`$BASE\`*   :arrow_left:   *\`$HEAD\`*"
+                "text": "*\`$BASE\`*   :arrow-l:   *\`$HEAD\`*"
             }
         },
             {
@@ -247,7 +247,7 @@ cat << EOF > payload.json
                         "type": "header",
                         "text": {
                             "type": "plain_text",
-                            "text": ":docker: $TITLE",
+                            "text": ":docker-1: $TITLE",
                             "emoji": true
                         }
                     },
