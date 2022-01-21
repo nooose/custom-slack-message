@@ -20,7 +20,7 @@ elif [ $COLOR == "cancelled" ]; then
     COLOR=\#A0A0A0
 fi
 
-EVENT_RESULT=$(<$GITHUB_EVENT_PATH.json)
+EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
 
 
 create_review_field_func() {
