@@ -20,9 +20,7 @@ elif [ $COLOR == "cancelled" ]; then
     COLOR=\#A0A0A0
 fi
 
-
-echo $GITHUB_EVENT_PATH
-cat $GITHUB_EVENT_PATH | jq .
+EVENT_RESULT=$(<$GITHUB_EVENT_PATH.json)
 
 
 create_review_field_func() {
@@ -129,14 +127,16 @@ add_reviewer_func() {
 
 
 if [ $TYPE == "pr" ]; then
+    echo [INFO] PR EVENT $EVENT_RESULT | jq .
 
     REPO_NAME=${GITHUB_REPOSITORY}
     PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
     PR_REVIEW_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/reviews
-    PR_RESULT=$(curl $PR_API \
-                    -H "Accept: application/vnd.github.v3+json" \
-                    -H "Authorization: Bearer $TOKEN")
-    PR_REVIEW_RESULT=$(curl $PR_REVIEW_API \
+    
+    EVENT_RESULT=$(<$GITHUB_EVENT_PATH.json)
+    PR_RESULT=$(echo $EVENT_RESULT | jq .pull_request)
+
+    PR_REVIEW_RESULT=$(curl -s $PR_REVIEW_API \
                     -H "Accept: application/vnd.github.v3+json" \
                     -H "Authorization: Bearer $TOKEN")                
 
@@ -215,6 +215,9 @@ EOF
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
 
 elif [ "$TYPE" == "build" ]; then
+    
+    echo [INFO] BUILD EVENT $EVENT_RESULT | jq .
+
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
@@ -224,7 +227,7 @@ elif [ "$TYPE" == "build" ]; then
     
     COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
     COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
-    COMMIT_RESULT=$(curl $COMMIT_API \
+    COMMIT_RESULT=$(curl -s $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN")
     COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)   
@@ -287,6 +290,7 @@ EOF
     
 
 elif [ $TYPE == "deploy" ]; then
+    echo [INFO] DEPLOY EVENT $EVENT_RESULT | jq .
 
     REPO_NAME=${GITHUB_REPOSITORY}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
@@ -294,7 +298,7 @@ elif [ $TYPE == "deploy" ]; then
 
     COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
     COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
-    COMMIT_RESULT=$(curl $COMMIT_API \
+    COMMIT_RESULT=$(curl -s $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN")
     COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
