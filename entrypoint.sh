@@ -216,7 +216,10 @@ EOF
 
 
 elif [ $TYPE == "push" ]; then
-
+    echo [INFO] TYPE $TYPE
+    echo [INFO] ls -lR
+    
+    ls -lR
 
 
 
