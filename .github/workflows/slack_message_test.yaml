@@ -22,10 +22,10 @@ jobs:
               echo "run test"
           done
 
-      # - name: slack message
-      #   uses: nooose/custom-slack-message@master
-      #   with:
-      #     type: push
-      #     slack_webhook: 
-      #     token: 
-      #     slack_color: ${{ job.status }}
+      - name: slack message
+        uses: nooose/custom-slack-message@master
+        with:
+          type: push
+          slack_webhook: 
+          token: 
+          slack_color: ${{ job.status }}
