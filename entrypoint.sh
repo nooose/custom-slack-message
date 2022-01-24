@@ -219,12 +219,12 @@ elif [ $TYPE == "push" ]; then
     echo [INFO] TYPE $TYPE
     
     echo $EVENT_RESULT
-    echo $EVENT_RESULT | jq .before
+    BEFORE_COMMIT=$(echo $EVENT_RESULT | jq -r .before)
 
-    # for COMMIT in $(git rev-list ..${GITHUB_SHA}); do
-    #     echo [INFO] COMMIT $COMMIT
-    #     git checkout $COMMIT
-    # done
+    for COMMIT in $(git rev-list ${BEFORE_COMMIT}..${GITHUB_SHA}); do
+        echo [INFO] COMMIT $COMMIT
+        git checkout $COMMIT
+    done
 
     ls -lR
 
