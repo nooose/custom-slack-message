@@ -214,6 +214,13 @@ EOF
     add_reviewer_func
     create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
 
+
+elif [ $TYPE == "push" ]; then
+
+
+
+
+
 elif [ "$TYPE" == "build" ]; then
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
