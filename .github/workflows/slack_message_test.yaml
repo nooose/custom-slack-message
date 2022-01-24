@@ -1,17 +1,27 @@
-on:
-  pull_request:
-    branches: [ none ]
-    types: [ closed ]
+on: 
+  push:
+    # only trigger on branches, not on tags
+    branches: '**'
 
 jobs:
   slack:
-  if: 
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          # checkout full tree
+          fetch-depth: 0
+      - name: Print commits
+        run: |
+          for COMMIT in $(git rev-list ${{ github.event.before }}..${{ github.sha }}); do
+              git checkout $COMMIT
+              echo "run test"
+          done
+
       - name: slack message
         uses: nooose/custom-slack-message@master
         with:
-          type: pr
+          type: push
           slack_webhook: 
           token: 
           slack_color: ${{ job.status }}
