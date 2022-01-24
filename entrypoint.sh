@@ -218,7 +218,7 @@ EOF
 elif [ $TYPE == "push" ]; then
     echo [INFO] TYPE $TYPE
     
-    echo $EVENT_RESULT
+    echo $EVENT_RESULT | jq .
     BEFORE_COMMIT=$(echo $EVENT_RESULT | jq -r .before)
 
     for COMMIT in $(git rev-list ${BEFORE_COMMIT}..${GITHUB_SHA}); do
