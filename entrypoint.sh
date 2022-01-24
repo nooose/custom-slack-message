@@ -217,8 +217,15 @@ EOF
 
 elif [ $TYPE == "push" ]; then
     echo [INFO] TYPE $TYPE
-    echo [INFO] ls -lR
     
+    echo $EVENT_RESULT
+    echo $EVENT_RESULT | jq .before
+
+    # for COMMIT in $(git rev-list ..${GITHUB_SHA}); do
+    #     echo [INFO] COMMIT $COMMIT
+    #     git checkout $COMMIT
+    # done
+
     ls -lR
 
 
