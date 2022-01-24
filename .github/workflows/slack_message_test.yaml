@@ -11,6 +11,10 @@ jobs:
         with:
           # checkout full tree
           fetch-depth: 0
+
+      - name: ls
+        run: ls -lR
+
       - name: Print commits
         run: |
           for COMMIT in $(git rev-list ${{ github.event.before }}..${{ github.sha }}); do
@@ -18,10 +22,10 @@ jobs:
               echo "run test"
           done
 
-      - name: slack message
-        uses: nooose/custom-slack-message@master
-        with:
-          type: push
-          slack_webhook: 
-          token: 
-          slack_color: ${{ job.status }}
+      # - name: slack message
+      #   uses: nooose/custom-slack-message@master
+      #   with:
+      #     type: push
+      #     slack_webhook: 
+      #     token: 
+      #     slack_color: ${{ job.status }}
