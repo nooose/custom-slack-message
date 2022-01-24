@@ -223,7 +223,11 @@ elif [ $TYPE == "push" ]; then
 
     for COMMIT in $(git rev-list ${BEFORE_COMMIT}..${GITHUB_SHA}); do
         echo [INFO] COMMIT $COMMIT
-        git checkout $COMMIT
+        
+        COMMITTER=$(git show -s --format=%an $COMMIT)
+        COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
+        
+        echo [INFO] $COMMITTER $COMMIT_MESSAGE
     done
 
     ls -lR
