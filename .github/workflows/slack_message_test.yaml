@@ -12,15 +12,6 @@ jobs:
           # checkout full tree
           fetch-depth: 0
 
-      - name: ls
-        run: ls -lR
-
-      - name: Print commits
-        run: |
-          for COMMIT in $(git rev-list ${{ github.event.before }}..${{ github.sha }}); do
-              git checkout $COMMIT
-              echo "run test"
-          done
 
       - name: slack message
         uses: nooose/custom-slack-message@master
