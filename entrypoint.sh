@@ -127,6 +127,26 @@ add_reviewer_func() {
 
 
 
+add_commit_field_func() {
+    COMMIT_MESSAGE=$1
+    COMMIT_URL=$2
+    COMMITTER=$3
+
+cat << EOF > commit_field.json
+    {
+        "type": "mrkdwn",
+        "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|$COMMITTER>"
+    }
+EOF
+    COMMIT_FIELD_PAYLOAD=$(<commit_field.json)
+    jq ".blocks[1].elements += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
+    mv tmp.json payload.json
+}
+
+
+
+
+
 if [ $TYPE == "pr" ]; then
 
     REPO_NAME=${GITHUB_REPOSITORY}
@@ -218,17 +238,6 @@ EOF
 elif [ $TYPE == "push" ]; then
     echo [INFO] TYPE $TYPE
     
-    echo $EVENT_RESULT | jq .
-    BEFORE_COMMIT=$(echo $EVENT_RESULT | jq -r .before)
-
-    for COMMIT in $(git rev-list ${BEFORE_COMMIT}..${GITHUB_SHA}); do
-        echo [INFO] COMMIT $COMMIT
-        
-        COMMITTER=$(git show -s --format=%an $COMMIT)
-        COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
-        COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
-        echo [INFO] $COMMIT $COMMITTER $COMMIT_MESSAGE
-    done
 
     echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
     echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
@@ -250,10 +259,7 @@ cat << EOF > payload.json
             {
                 "type": "context",
                 "elements": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|확인>"
-                    }
+                    
                 ]
             },
             {
@@ -265,7 +271,7 @@ cat << EOF > payload.json
                     },
                     {
                         "type": "mrkdwn",
-                        "text": ""
+                        "text": " "
                     },
                     {
                         "type": "mrkdwn",
@@ -273,7 +279,7 @@ cat << EOF > payload.json
                     },
                     {
                         "type": "mrkdwn",
-                        "text": ""
+                        "text": " "
                     }
                 ]
             }
@@ -281,13 +287,20 @@ cat << EOF > payload.json
     }
 EOF
 
+    echo $EVENT_RESULT | jq .
+    BEFORE_COMMIT=$(echo $EVENT_RESULT | jq -r .before)
 
+    for COMMIT in $(git rev-list ${BEFORE_COMMIT}..${GITHUB_SHA}); do
+        echo [INFO] COMMIT $COMMIT
+        
+        COMMITTER=$(git show -s --format=%an $COMMIT)
+        COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
+        COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
+        
+        add_commit_field_func $COMMIT_MESSAGE $COMMIT_URL $COMMITTER
+    done
 
-
-
-
-
-    ls -lR
+    
 
 
 
