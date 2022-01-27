@@ -163,7 +163,7 @@ cat << EOF > payload.json
             "type": "header",
             "text": {
                 "type": "plain_text",
-                "text": ":github: $TITLE",
+                "text": ":github: :merged: $TITLE",
                 "emoji": true
             }
         },
@@ -226,9 +226,66 @@ elif [ $TYPE == "push" ]; then
         
         COMMITTER=$(git show -s --format=%an $COMMIT)
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
-        
-        echo [INFO] $COMMITTER $COMMIT_MESSAGE
+        COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
+        echo [INFO] $COMMIT $COMMITTER $COMMIT_MESSAGE
     done
+
+    echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
+    echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
+    TITLE=$GITHUB_REPOSITORY
+    BRANCH_NAME=$GITHUB_REF_NAME
+
+
+cat << EOF > payload.json
+    {
+        "blocks": [
+            {
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":github: :git-push: $TITLE",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "mrkdwn",
+                        "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|확인>"
+                    }
+                ]
+            },
+            {
+                "type": "section",
+                "fields": [
+                    {
+                        "type": "mrkdwn",
+                        "text": "*브랜치*"
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": ""
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": "\`$BRANCH_NAME\`"
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": ""
+                    }
+                ]
+            }
+        ]
+    }
+EOF
+
+
+
+
+
+
 
     ls -lR
 
