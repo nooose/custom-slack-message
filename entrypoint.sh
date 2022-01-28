@@ -132,10 +132,15 @@ add_commit_field_func() {
     COMMIT_URL=$2
     COMMITTER=$3
 
+    echo [INFO] FUNC COMMIT_MESSAGE $COMMIT_MESSAGE
+    echo [INFO] FUNC COMMIT_URL $COMMIT_URL
+    echo [INFO] FUNC COMMITTER $COMMITTER
+    
+    
 cat << EOF > commit_field.json
     {
         "type": "mrkdwn",
-        "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|$COMMITTER>"
+        "text": "$COMMIT_MESSAGE <$COMMIT_URL|$COMMITTER>"
     }
 EOF
     COMMIT_FIELD_PAYLOAD=$(<commit_field.json)
@@ -296,6 +301,10 @@ EOF
         COMMITTER=$(git show -s --format=%an $COMMIT)
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
         COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
+        
+        echo [INFO] COMMIT_MESSAGE $COMMIT_MESSAGE
+        echo [INFO] COMMIT_URL $COMMIT_URL
+        echo [INFO] COMMITTER $COMMITTER
         
         add_commit_field_func $COMMIT_MESSAGE $COMMIT_URL $COMMITTER
     done
