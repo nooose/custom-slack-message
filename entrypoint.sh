@@ -144,7 +144,7 @@ cat << EOF > commit_field.json
 }
 EOF
     COMMIT_FIELD_PAYLOAD=$(<commit_field.json)
-    jq ".blocks += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".attachments.blocks += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
 
 }
