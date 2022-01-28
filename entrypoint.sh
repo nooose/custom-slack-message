@@ -246,9 +246,11 @@ elif [ $TYPE == "push" ]; then
 
     echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
     echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
-    TITLE=$GITHUB_REPOSITORY
     BRANCH_NAME=$GITHUB_REF_NAME
 
+    if [ -z $TITLE ]; then
+        TITLE=$(basename $GITHUB_REPOSITORY)
+    fi
 
 cat << EOF > payload.json
     {
