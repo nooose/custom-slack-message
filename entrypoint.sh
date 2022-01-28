@@ -138,7 +138,7 @@ cat << EOF > commit_field.json
     "elements": [
         {
             "type": "mrkdwn",
-            "text": "*${COMMIT_MESSAGE}*\n<${COMMIT_URL}|${COMMITTER}>"
+            "text": "${COMMIT_MESSAGE} <${COMMIT_URL}|${COMMITTER}>"
         }
     ]
 }
