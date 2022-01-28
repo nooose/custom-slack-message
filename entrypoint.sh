@@ -254,39 +254,44 @@ elif [ $TYPE == "push" ]; then
     fi
 
 cat << EOF > payload.json
-    {
-        "blocks": [
-            {
-                "type": "header",
-                "text": {
-                    "type": "plain_text",
-                    "text": ":github: :git-push: $TITLE",
-                    "emoji": true
-                }
-            },
-            {
-                "type": "section",
-                "fields": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "*브랜치*"
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": " "
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": "*\`$BRANCH_NAME\`*"
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": " "
-                    }
-                ]
-            }
-        ]
-    }
+{
+	"attachments": [
+		{
+			"color": "#00498C",
+			"blocks": [
+				{
+					"type": "header",
+					"text": {
+						"type": "plain_text",
+						"text": ":github: :git-push: $TITLE",
+						"emoji": true
+					}
+				},
+				{
+					"type": "section",
+					"fields": [
+						{
+							"type": "mrkdwn",
+							"text": "*브랜치*"
+						},
+						{
+							"type": "mrkdwn",
+							"text": " "
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*`$BRANCH_NAME`*"
+						},
+						{
+							"type": "mrkdwn",
+							"text": " "
+						}
+					]
+				}
+			]
+		}
+	]
+}
 EOF
 
     echo $EVENT_RESULT | jq .
