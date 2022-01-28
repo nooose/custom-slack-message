@@ -297,7 +297,7 @@ EOF
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
         COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
         
-        add_commit_field_func $COMMIT_MESSAGE $COMMIT_URL $COMMITTER
+        add_commit_field_func "$COMMIT_MESSAGE" "$COMMIT_URL" "$COMMITTER"
     done
 
     
