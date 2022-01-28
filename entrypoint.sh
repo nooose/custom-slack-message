@@ -132,20 +132,21 @@ add_commit_field_func() {
     COMMIT_URL=$2
     COMMITTER=$3
 
-    echo [INFO] FUNC COMMIT_MESSAGE $COMMIT_MESSAGE
-    echo [INFO] FUNC COMMIT_URL $COMMIT_URL
-    echo [INFO] FUNC COMMITTER $COMMITTER
-    
-    
 cat << EOF > commit_field.json
-    {
-        "type": "mrkdwn",
-        "text": "$COMMIT_MESSAGE <$COMMIT_URL|$COMMITTER>"
-    }
+{
+    "type": "context",
+    "elements": [
+        {
+            "type": "mrkdwn",
+            "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|*$COMMITTER*>"
+        }
+    ]
+}
 EOF
     COMMIT_FIELD_PAYLOAD=$(<commit_field.json)
-    jq ".blocks[1].elements += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".blocks += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
+
 }
 
 
@@ -246,11 +247,9 @@ elif [ $TYPE == "push" ]; then
 
     echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
     echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
+    TITLE=$GITHUB_REPOSITORY
     BRANCH_NAME=$GITHUB_REF_NAME
 
-    if [ -z $TITLE ]; then
-        TITLE=$(basename $GITHUB_REPOSITORY)
-    fi
 
 cat << EOF > payload.json
     {
@@ -262,12 +261,6 @@ cat << EOF > payload.json
                     "text": ":github: :git-push: $TITLE",
                     "emoji": true
                 }
-            },
-            {
-                "type": "context",
-                "elements": [
-                    
-                ]
             },
             {
                 "type": "section",
@@ -304,11 +297,7 @@ EOF
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
         COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
         
-        echo [INFO] COMMIT_MESSAGE $COMMIT_MESSAGE
-        echo [INFO] COMMIT_URL $COMMIT_URL
-        echo [INFO] COMMITTER $COMMITTER
-        
-        add_commit_field_func "$COMMIT_MESSAGE" "$COMMIT_URL" "$COMMITTER"
+        add_commit_field_func $COMMIT_MESSAGE $COMMIT_URL $COMMITTER
     done
 
     
