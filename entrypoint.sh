@@ -93,7 +93,7 @@ cat << EOF > merged_field.json
     }
 EOF
     MERGED_FIELD_PAYLOAD=$(<merged_field.json)
-    jq ".blocks += [$MERGED_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".attachments[].blocks += [$MERGED_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
 }
 
@@ -184,55 +184,60 @@ if [ $TYPE == "pr" ]; then
 
 cat << EOF > payload.json
 {
-    "blocks": [
-        {
-            "type": "header",
-            "text": {
-                "type": "plain_text",
-                "text": ":github: :merged: $TITLE",
-                "emoji": true
-            }
-        },
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "*\`$BASE\`*   :arrow-l:   *\`$HEAD\`*"
-            }
-        },
-            {
-                "type": "context",
-                "elements": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "$PR_TITLE\n<$PR_URL|확인>"
-                    }
-                ]
-            },
-        {
-            "type": "divider"
-        },
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "*PR 생성*"
-            }
-        },
-        {
-            "type": "context",
-            "elements": [
-                {
-                    "type": "image",
-                    "image_url": $PR_CREATOR_AVATAR,
-                    "alt_text": ""
-                },
-                {
-                    "type": "plain_text",
-                    "text": $PR_CREATOR
-                }
-            ]
-        }
+	"attachments": [
+			{
+			"color": "#FFD400",
+			    "blocks": [
+				{
+				    "type": "header",
+				    "text": {
+					"type": "plain_text",
+					"text": ":github: :merged: $TITLE",
+					"emoji": true
+				    }
+				},
+				{
+				    "type": "section",
+				    "text": {
+					"type": "mrkdwn",
+					"text": "*\`$BASE\`*   :arrow-l:   *\`$HEAD\`*"
+				    }
+				},
+				    {
+					"type": "context",
+					"elements": [
+					    {
+						"type": "mrkdwn",
+						"text": "$PR_TITLE\n<$PR_URL|확인>"
+					    }
+					]
+				    },
+				{
+				    "type": "divider"
+				},
+				{
+				    "type": "section",
+				    "text": {
+					"type": "mrkdwn",
+					"text": "*PR 생성*"
+				    }
+				},
+				{
+				    "type": "context",
+				    "elements": [
+					{
+					    "type": "image",
+					    "image_url": $PR_CREATOR_AVATAR,
+					    "alt_text": ""
+					},
+					{
+					    "type": "plain_text",
+					    "text": $PR_CREATOR
+					}
+				    ]
+				}
+			    ]
+    	}
     ]
 }
 EOF
