@@ -247,9 +247,11 @@ elif [ $TYPE == "push" ]; then
 
     echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
     echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
-    TITLE=$GITHUB_REPOSITORY
     BRANCH_NAME=$GITHUB_REF_NAME
 
+    if [ -z $TITLE ]; then
+        TITLE=$(basename $GITHUB_REPOSITORY)
+    fi
 
 cat << EOF > payload.json
     {
@@ -324,7 +326,7 @@ elif [ "$TYPE" == "build" ]; then
 
 
     if [ -z $TITLE ]; then
-        TITLE=$SERVICE_NAME 빌드
+        TITLE="$SERVICE_NAME 빌드"
     fi
 
 cat << EOF > payload.json
@@ -393,7 +395,7 @@ elif [ $TYPE == "deploy" ]; then
     COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
 
     if [ -z $TITLE ]; then
-        TITLE=${SERVICE_NAME} 배포
+        TITLE="${SERVICE_NAME} 배포"
     fi
 
 cat << EOF > payload.json
