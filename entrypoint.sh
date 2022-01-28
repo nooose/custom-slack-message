@@ -242,11 +242,11 @@ EOF
 
 
 elif [ $TYPE == "push" ]; then
-    echo [INFO] TYPE $TYPE
+#     echo [INFO] TYPE $TYPE
     
 
-    echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
-    echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
+#     echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
+#     echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
     BRANCH_NAME=$GITHUB_REF_NAME
 
     if [ -z $TITLE ]; then
@@ -294,11 +294,11 @@ cat << EOF > payload.json
 }
 EOF
 
-    echo $EVENT_RESULT | jq .
+#     echo $EVENT_RESULT | jq .
     BEFORE_COMMIT=$(echo $EVENT_RESULT | jq -r .before)
 
     for COMMIT in $(git rev-list ${BEFORE_COMMIT}..${GITHUB_SHA}); do
-        echo [INFO] COMMIT $COMMIT
+#         echo [INFO] COMMIT $COMMIT
         
         COMMITTER=$(git show -s --format=%an $COMMIT)
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
