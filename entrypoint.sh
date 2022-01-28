@@ -177,7 +177,7 @@ if [ $TYPE == "pr" ]; then
     MERGED_BY_AVATAR=$(echo $PR_RESULT | jq .merged_by.avatar_url)
 
     if [ -z $TITLE ]; then
-        TITLE=$SERVICE_NAME
+        TITLE="$SERVICE_NAME Merge pull request"
     fi
 
     # COLOR=\#A0A0A0
@@ -255,7 +255,7 @@ elif [ $TYPE == "push" ]; then
     BRANCH_NAME=$GITHUB_REF_NAME
 
     if [ -z $TITLE ]; then
-        TITLE=$(basename $GITHUB_REPOSITORY)
+        TITLE="$(basename $GITHUB_REPOSITORY) Push"
     fi
 
 cat << EOF > payload.json
