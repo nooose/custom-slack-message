@@ -366,7 +366,7 @@ cat << EOF > payload.json
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": "\`$BRANCH_NAME\`"
+                                "text": "*\`$BRANCH_NAME\`*"
                             },
                             {
                                 "type": "mrkdwn",
@@ -435,7 +435,7 @@ cat << EOF > payload.json
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": "\`$ENVIRONMENT\`"
+                                "text": "*\`$ENVIRONMENT\`*"
                             },
                             {
                                 "type": "mrkdwn",
