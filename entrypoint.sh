@@ -133,14 +133,20 @@ add_commit_field_func() {
     COMMITTER=$3
 
 cat << EOF > commit_field.json
-    {
-        "type": "mrkdwn",
-        "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|$COMMITTER>"
-    }
+{
+    "type": "context",
+    "elements": [
+        {
+            "type": "mrkdwn",
+            "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|*$COMMITTER*>"
+        }
+    ]
+}
 EOF
     COMMIT_FIELD_PAYLOAD=$(<commit_field.json)
-    jq ".blocks[1].elements += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".blocks += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
+
 }
 
 
@@ -255,12 +261,6 @@ cat << EOF > payload.json
                     "text": ":github: :git-push: $TITLE",
                     "emoji": true
                 }
-            },
-            {
-                "type": "context",
-                "elements": [
-                    
-                ]
             },
             {
                 "type": "section",
