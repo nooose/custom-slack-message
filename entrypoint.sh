@@ -306,7 +306,7 @@ EOF
         echo [INFO] COMMIT_URL $COMMIT_URL
         echo [INFO] COMMITTER $COMMITTER
         
-        add_commit_field_func $COMMIT_MESSAGE $COMMIT_URL $COMMITTER
+        add_commit_field_func "$COMMIT_MESSAGE" "$COMMIT_URL" "$COMMITTER"
     done
 
     
