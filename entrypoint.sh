@@ -138,7 +138,11 @@ cat << EOF > commit_field.json
     "elements": [
         {
             "type": "mrkdwn",
+<<<<<<< HEAD
             "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|*$COMMITTER*>"
+=======
+            "text": "*${COMMIT_MESSAGE}*\n<${COMMIT_URL}|${COMMITTER}>"
+>>>>>>> 7dd9c198c8458c608722a39f98056013f47834df
         }
     ]
 }
@@ -297,7 +301,7 @@ EOF
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
         COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
         
-        add_commit_field_func $COMMIT_MESSAGE $COMMIT_URL $COMMITTER
+        add_commit_field_func "$COMMIT_MESSAGE" "$COMMIT_URL" "$COMMITTER"
     done
 
     
