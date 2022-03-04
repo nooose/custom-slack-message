@@ -138,11 +138,7 @@ cat << EOF > commit_field.json
     "elements": [
         {
             "type": "mrkdwn",
-<<<<<<< HEAD
-            "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|*$COMMITTER*>"
-=======
             "text": "*${COMMIT_MESSAGE}*\n<${COMMIT_URL}|${COMMITTER}>"
->>>>>>> 7dd9c198c8458c608722a39f98056013f47834df
         }
     ]
 }
@@ -399,6 +395,8 @@ elif [ $TYPE == "deploy" ]; then
     if [ -z $TITLE ]; then
         TITLE=${SERVICE_NAME} 배포
     fi
+
+    echo [INFO] deployment notification
 
 cat << EOF > payload.json
     {
