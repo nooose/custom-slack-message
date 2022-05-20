@@ -363,6 +363,15 @@ cat << EOF > payload.json
                             }
                         ]
                     },
+			{
+					"type": "context",
+					"elements": [
+						{
+							"type": "mrkdwn",
+							"text": "이미지 태그\n$TAG"
+						}
+					]
+			},
                     {
                         "type": "section",
                         "fields": [
