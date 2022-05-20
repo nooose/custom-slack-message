@@ -22,7 +22,7 @@ fi
 
 echo [INFO] EVENT $GITHUB_EVENT_PATH
 EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
-
+$
 
 create_review_field_func() {
 cat << EOF > review_field.json
@@ -368,7 +368,7 @@ cat << EOF > payload.json
 					"elements": [
 						{
 							"type": "mrkdwn",
-							"text": "이미지 태그\n$TAG"
+							"text": "*이미지 태그*\n$TAG"
 						}
 					]
 			},
