@@ -368,7 +368,7 @@ cat << EOF > payload.json
 					"elements": [
 						{
 							"type": "mrkdwn",
-							"text": "*이미지 태그*\n$TAG"
+							"text": "*이미지 태그*\n`$TAG`"
 						}
 					]
 			},
