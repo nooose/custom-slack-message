@@ -48,7 +48,7 @@ function create_build_payload() {
 }
 
 # === main ===
-echo [INFO] EVENT $GITHUB_EVENT_PATH
+echo "[INFO] EVENT $GITHUB_EVENT_PATH"
 echo `cat $GITHUB_EVENT_PATH` | jq .
 
 
@@ -59,17 +59,18 @@ elif [ "$COLOR" == "failure" ]; then
 elif [ "$COLOR" == "cancelled" ]; then
     COLOR=\#A0A0A0
 else
-    COLOR=\#2EB886
+    COLOR=\#A0A0A0
 fi
 
 if [ "$TYPE" == "build" ]; then
     create_build_payload
 else
-    return 1;
+    echo "[ERROR] $TYPE type is not supported."
+    exit 1;
 fi
 
 # echo payload
-echo [INFO] slack payload
+echo "[INFO] slack payload"
 echo `cat payload.json` | jq .
 
 # send message to slack channel
