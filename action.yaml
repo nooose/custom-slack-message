@@ -33,4 +33,3 @@ runs:
     - ${{ inputs.token }} # git token  
     - ${{ inputs.slack_color }} # git status
     - ${{ inputs.title }}
-    - ${{ inputs.environment }}
