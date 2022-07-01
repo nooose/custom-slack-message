@@ -142,6 +142,6 @@ else
     return 1;
 fi
 
-send message to slack channel
+# send message to slack channel
 curl -s $SLACK_WEBHOOK \
      -d @payload.json
