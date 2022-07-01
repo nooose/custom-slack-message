@@ -10,7 +10,7 @@ ENVIRONMENT=$6
 
 function create_build_payload() {
     REPO_NAME=${GITHUB_REPOSITORY}
-    SERVICE_NAME=$(basename $REPO_NAME)
+    SERVICE_NAME=`basename $REPO_NAME`
     BRANCH_NAME=${GITHUB_REF##*heads/}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
@@ -18,10 +18,21 @@ function create_build_payload() {
     
     COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
     COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
-    COMMIT_RESULT=$(curl -s $COMMIT_API \
+    COMMIT_RESULT=`curl -s $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
-                         -H "Authorization: Bearer $TOKEN")
-    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
+                         -H "Authorization: Bearer $TOKEN"`
+    COMMIT_MESSAGE=`echo $COMMIT_RESULT | jq -r .commit.message`
+
+    
+    
+    GTIHUB_EVENT_JSON=$(<GITHUB_EVENT_PATH)
+    SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.avartar_url`
+    SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.html_url`
+    SENDER_NAME=`basename SENDER_HTML_URL`
+
+    echo SENDER_AVARTAR $SENDER_AVATAR_URL
+    echo SENDER_HTML_URL $SENDER_HTML_URL
+    echo SENDER_NAME $SENDER_NAME
     
     if [ -z $TITLE ]; then
         TITLE="$SERVICE_NAME 빌드"
@@ -88,6 +99,9 @@ cat << EOF > payload.json
 EOF
 }
 
+echo [INFO] EVENT $GITHUB_EVENT_PATH
+echo `cat $GITHUB_EVENT_PATH` 
+
 
 # === main ===
 if [ "$COLOR" == "success" ]; then
@@ -99,11 +113,6 @@ elif [ "$COLOR" == "cancelled" ]; then
 else
     COLOR=\#2EB886
 fi
-
-
-
-echo [INFO] EVENT $GITHUB_EVENT_PATH
-echo `cat $GITHUB_EVENT_PATH` | jq .
 
 if [ "$TYPE" == "build" ]; then
     create_build_payload
