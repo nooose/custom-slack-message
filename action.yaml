@@ -28,9 +28,9 @@ runs:
   using: 'docker'                 
   image: 'Dockerfile'             
   args:
-    - ${{ inputs.type }}  # pr, build, deploy
+    - ${{ inputs.type }}  # build
     - ${{ inputs.slack_webhook }}
     - ${{ inputs.token }} # git token  
-    - ${{ inputs.slack_color }}
+    - ${{ inputs.slack_color }} # git status
     - ${{ inputs.title }}
-    - ${{ inputs.environment }} 
+    - ${{ inputs.environment }}
