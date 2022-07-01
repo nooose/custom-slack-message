@@ -89,7 +89,7 @@ EOF
 }
 
 
-# main
+# === main ===
 if [ "$COLOR" == "success" ]; then
     COLOR=\#2EB886
 elif [ "$COLOR" == "failure" ]; then
@@ -102,7 +102,7 @@ fi
 
 
 GITHUB_EVENT_JSON=$(<GITHUB_EVENT_PATH)
-echo [INFO] EVENT
+echo [INFO] EVENT $GITHUB_EVENT_PATH
 echo $GITHUB_EVENT_JSON | jq .
 
 if [ "$TYPE" == "build" ]; then
