@@ -101,9 +101,9 @@ else
 fi
 
 
-GITHUB_EVENT_JSON=$(<GITHUB_EVENT_PATH)
+
 echo [INFO] EVENT $GITHUB_EVENT_PATH
-echo $GITHUB_EVENT_JSON | jq .
+cat $GITHUB_EVENT_JSON | jq .
 
 if [ "$TYPE" == "build" ]; then
     create_build_payload
