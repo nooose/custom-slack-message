@@ -37,95 +37,25 @@ function create_build_payload() {
         TITLE="$SERVICE_NAME 빌드"
     fi
 
-cat << EOF > payload.json
-    {
-        "attachments": 
-        [
-            {
-                "color": "$COLOR",
-                "blocks": [
-                    {
-                        "type": "header",
-                        "text": {
-                            "type": "plain_text",
-                            "text": ":docker-1: $TITLE",
-                            "emoji": true
-                        }
-                    },
-                    {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|확인>"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "*Action sender*"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "image",
-                                "image_url": "$SENDER_AVATAR_URL",
-                                "alt_text": "avatar"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "\n<$SENDER_HTML_URL|$SENDER_NAME>"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "*이미지 태그*\n\`$TAG\`"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "section",
-                        "fields": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "*브랜치*"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "*Action URL*"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "*\`$BRANCH_NAME\`*"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "<$ACTION_URL|$GITHUB_WORKFLOW>"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-EOF
-}
+    sed -i -e "s/<TITLE>/$TITLE/g" build_payload.json
+    sed -i -e "s/<COMMIT_MESSAGE>/$COMMIT_MESSAGE/g" build_payload.json
+    sed -i -e "s/<COMMIT_URL>/$COMMIT_URL/g" build_payload.json
+    sed -i -e "s/<SENDER_AVATAR_URL>/$SENDER_AVATAR_URL/g" build_payload.json
+    sed -i -e "s/<SENDER_HTML_URL>/$SENDER_HTML_URL/g" build_payload.json
+    sed -i -e "s/<SENDER_NAME>/$SENDER_NAME/g" build_payload.json
+    sed -i -e "s/<TAG>/$TAG/g" build_payload.json
+    sed -i -e "s/<BRANCH_NAME>/$BRANCH_NAME/g" build_payload.json
+    sed -i -e "s/<GITHUB_WORKFLOW>/$GITHUB_WORKFLOW/g" build_payload.json
 
+    mv build_payload.json payload.json
+}    
+        
+
+# === main ===
 echo [INFO] EVENT $GITHUB_EVENT_PATH
 echo `cat $GITHUB_EVENT_PATH` | jq .
 
 
-# === main ===
 if [ "$COLOR" == "success" ]; then
     COLOR=\#2EB886
 elif [ "$COLOR" == "failure" ]; then

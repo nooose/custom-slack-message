@@ -1,0 +1,80 @@
+{
+    "attachments": 
+    [
+        {
+            "color": "$COLOR",
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": ":docker-1: <TITLE>",
+                        "emoji": true
+                    }
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "mrkdwn",
+                            "text": "<COMMIT_MESSAGE>\n<<COMMIT_URL>|확인>"
+                        }
+                    ]
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "mrkdwn",
+                            "text": "*Action sender*"
+                        }
+                    ]
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "image",
+                            "image_url": "<SENDER_AVATAR_URL>",
+                            "alt_text": "avatar"
+                        },
+                        {
+                            "type": "mrkdwn",
+                            "text": "\n<<SENDER_HTML_URL>|<SENDER_NAME>>"
+                        }
+                    ]
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "mrkdwn",
+                            "text": "*이미지 태그*\n\`<TAG>\`"
+                        }
+                    ]
+                },
+                {
+                    "type": "section",
+                    "fields": [
+                        {
+                            "type": "mrkdwn",
+                            "text": "*브랜치*"
+                        },
+                        {
+                            "type": "mrkdwn",
+                            "text": "*Action URL*"
+                        },
+                        {
+                            "type": "mrkdwn",
+                            "text": "*\`<BRANCH_NAME>\`*"
+                        },
+                        {
+                            "type": "mrkdwn",
+                            "text": "<<ACTION_URL>|<GITHUB_WORKFLOW>>"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
