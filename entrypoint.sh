@@ -8,62 +8,21 @@ COLOR=$4
 TITLE=$5
 ENVIRONMENT=$6
 
-
-if [ -z $COLOR ]; then
+if [ "$COLOR" == "success" ]; then
     COLOR=\#2EB886
-elif [ $COLOR == "success" ]; then
-    COLOR=\#2EB886
-elif [ $COLOR == "failure" ]; then
+elif [ "$COLOR" == "failure" ]; then
     COLOR=\#CC0000
-elif [ $COLOR == "cancelled" ]; then
+elif [ "$COLOR" == "cancelled" ]; then
     COLOR=\#A0A0A0
+else
+    COLOR=\#2EB886
 fi
 
-
 echo [INFO] EVENT $GITHUB_EVENT_PATH
-EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
-$
+EVENT_RESULT=$GITHUB_EVENT_PATH
 
-function create_review_field() {
-cat << EOF > review_field.json
-    {
-        "type": "section",
-        "text": {
-            "type": "mrkdwn",
-            "text": "*리뷰어*"
-        }
-    }
-EOF
-    REVIEW_FIELD_PAYLOAD=$(<review_field.json)
-    jq ".blocks += [$REVIEW_FIELD_PAYLOAD]" payload.json > tmp.json
-    mv tmp.json payload.json
-}
 
-function create_reviewer() {
-    USER=$1
-    AVATAR=$2
 
-cat << EOF > reviewer.json
-    {
-    "type": "context",
-    "elements": 
-        [
-            {
-                "type": "image",
-                "image_url": $AVATAR,
-                "alt_text": ""
-            },
-            {
-                "type": "plain_text",
-                "text": $USER
-            }
-        ]
-    }
-EOF
-    REVIEWR_PAYLOAD=$(<reviewer.json)
-    jq ".blocks += [$REVIEWR_PAYLOAD]" payload.json > tmp.json
-    mv tmp.json payload.json
-}
 
 function create_merged_by_field() {
     MERGED_BY=$1
@@ -125,6 +84,46 @@ function add_reviewer() {
     done
 }
 
+function create_review_field() {
+cat << EOF > review_field.json
+    {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "*리뷰어*"
+        }
+    }
+EOF
+    REVIEW_FIELD_PAYLOAD=$(<review_field.json)
+    jq ".blocks += [$REVIEW_FIELD_PAYLOAD]" payload.json > tmp.json
+    mv tmp.json payload.json
+}
+
+function create_reviewer() {
+    USER=$1
+    AVATAR=$2
+
+cat << EOF > reviewer.json
+    {
+    "type": "context",
+    "elements": 
+        [
+            {
+                "type": "image",
+                "image_url": $AVATAR,
+                "alt_text": ""
+            },
+            {
+                "type": "plain_text",
+                "text": $USER
+            }
+        ]
+    }
+EOF
+    REVIEWR_PAYLOAD=$(<reviewer.json)
+    jq ".blocks += [$REVIEWR_PAYLOAD]" payload.json > tmp.json
+    mv tmp.json payload.json
+}
 
 
 function add_commit_field() {
@@ -149,12 +148,7 @@ EOF
 
 }
 
-
-
-
-
-if [ $TYPE == "pr" ]; then
-
+function create_pull_request_payload() {
     REPO_NAME=${GITHUB_REPOSITORY}
     PR_NUMBER=$(echo $EVENT_RESULT | jq .number)
     PR_API=https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER
@@ -244,15 +238,10 @@ EOF
 
     add_reviewer
     create_merged_by_field $MERGED_BY $MERGED_BY_AVATAR
+}
 
-
-elif [ $TYPE == "push" ]; then
-#     echo [INFO] TYPE $TYPE
-    
-
-#     echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
-#     echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
-    BRANCH_NAME=$GITHUB_REF_NAME
+function create_push_payload() {
+BRANCH_NAME=$GITHUB_REF_NAME
 
     if [ -z $TITLE ]; then
         TITLE="$(basename $GITHUB_REPOSITORY) Push"
@@ -311,13 +300,9 @@ EOF
         
         add_commit_field "$COMMIT_MESSAGE" "$COMMIT_URL" "$COMMITTER"
     done
+}
 
-    
-
-
-
-
-elif [ "$TYPE" == "build" ]; then
+function create_build_payload() {
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=$(basename $REPO_NAME)
     BRANCH_NAME=${GITHUB_REF##*heads/}
@@ -398,10 +383,9 @@ cat << EOF > payload.json
         ]
     }
 EOF
-    
+}
 
-elif [ $TYPE == "deploy" ]; then
-
+function create_deploy_payload() {
     REPO_NAME=${GITHUB_REPOSITORY}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
@@ -417,8 +401,6 @@ elif [ $TYPE == "deploy" ]; then
         TITLE="${SERVICE_NAME} 배포"
     fi
     
-    echo [INFO] deployment notification
-
     echo [INFO] deployment notification
 
 cat << EOF > payload.json
@@ -471,11 +453,22 @@ cat << EOF > payload.json
         ]
     }
 EOF
+}
 
+
+
+# main
+if [ $TYPE == "pr" ]; then
+    create_pull_request_payload
+elif [ $TYPE == "push" ]; then
+    create_push_payload
+elif [ "$TYPE" == "build" ]; then
+    create_build_payload
+elif [ $TYPE == "deploy" ]; then
+    create_build_payload
 else
     return 1;
 fi
-
 
 # send message to slack channel
 curl -s $SLACK_WEBHOOK \
