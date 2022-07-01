@@ -8,7 +8,7 @@
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": ":docker-1: <TITLE>",
+                        "text": ":docker-1: TITLE",
                         "emoji": true
                     }
                 },
@@ -17,7 +17,7 @@
                     "elements": [
                         {
                             "type": "mrkdwn",
-                            "text": "<COMMIT_MESSAGE>\n<<COMMIT_URL>|확인>"
+                            "text": "COMMIT_MESSAGE\n<COMMIT_URL|확인>"
                         }
                     ]
                 },
@@ -35,12 +35,12 @@
                     "elements": [
                         {
                             "type": "image",
-                            "image_url": "<SENDER_AVATAR_URL>",
+                            "image_url": "SENDER_AVATAR_URL",
                             "alt_text": "avatar"
                         },
                         {
                             "type": "mrkdwn",
-                            "text": "\n<<SENDER_HTML_URL>|<SENDER_NAME>>"
+                            "text": "\n<SENDER_HTML_URL|SENDER_NAME>"
                         }
                     ]
                 },
@@ -49,7 +49,7 @@
                     "elements": [
                         {
                             "type": "mrkdwn",
-                            "text": "*이미지 태그*\n\`<TAG>\`"
+                            "text": "*이미지 태그*\n\`TAG\`"
                         }
                     ]
                 },
@@ -66,11 +66,11 @@
                         },
                         {
                             "type": "mrkdwn",
-                            "text": "*\`<BRANCH_NAME>\`*"
+                            "text": "*\`BRANCH_NAME\`*"
                         },
                         {
                             "type": "mrkdwn",
-                            "text": "<<ACTION_URL>|<GITHUB_WORKFLOW>>"
+                            "text": "<ACTION_URL|GITHUB_WORKFLOW>"
                         }
                     ]
                 }
