@@ -26,9 +26,9 @@ function create_build_payload() {
     
     
     GTIHUB_EVENT_JSON=`cat $GITHUB_EVENT_PATH`
-    SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.avartar_url`
+    SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.avatar_url`
     SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.html_url`
-    SENDER_NAME=`basename SENDER_HTML_URL`
+    SENDER_NAME=`basename $SENDER_HTML_URL`
 
     echo SENDER_AVARTAR $SENDER_AVATAR_URL
     echo SENDER_HTML_URL $SENDER_HTML_URL
