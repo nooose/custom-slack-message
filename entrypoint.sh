@@ -6,7 +6,6 @@ SLACK_WEBHOOK=$2
 TOKEN=$3
 COLOR=$4
 TITLE=$5
-ENVIRONMENT=$6
 
 function create_build_payload() {
     REPO_NAME=${GITHUB_REPOSITORY}
