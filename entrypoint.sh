@@ -32,7 +32,7 @@ function create_build_payload() {
         TITLE="$SERVICE_NAME 빌드"
     fi
 
-    sed -i -e "s@TITLE@$TITLE@g" //build_payload.json
+    sed -i -e "s@TITLE@$TITLE@g" /build_payload.json
     sed -i -e "s@COMMIT_MESSAGE@$COMMIT_MESSAGE@g" /build_payload.json
     sed -i -e "s@COMMIT_URL@$COMMIT_URL@g" /build_payload.json
     sed -i -e "s@SENDER_AVATAR_URL@$SENDER_AVATAR_URL@g" /build_payload.json
