@@ -103,7 +103,7 @@ fi
 
 
 echo [INFO] EVENT $GITHUB_EVENT_PATH
-echo `cat $GITHUB_EVENT_JSON` | jq .
+echo `cat $GITHUB_EVENT_PATH` | jq .
 
 if [ "$TYPE" == "build" ]; then
     create_build_payload
@@ -112,5 +112,5 @@ else
 fi
 
 # send message to slack channel
-curl -s $SLACK_WEBHOOK \
-     -d @payload.json
+# curl -s $SLACK_WEBHOOK \
+#      -d @payload.json
