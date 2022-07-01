@@ -385,77 +385,6 @@ cat << EOF > payload.json
 EOF
 }
 
-function create_deploy_payload() {
-    REPO_NAME=${GITHUB_REPOSITORY}
-    ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-    GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
-
-    COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
-    COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
-    COMMIT_RESULT=$(curl -s $COMMIT_API \
-                         -H "Accept: application/vnd.github.v3+json" \
-                         -H "Authorization: Bearer $TOKEN")
-    COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
-
-    if [ -z $TITLE ]; then
-        TITLE="${SERVICE_NAME} 배포"
-    fi
-    
-    echo [INFO] deployment notification
-
-cat << EOF > payload.json
-    {
-        "attachments": 
-        [
-            {
-                "color": "$COLOR",
-                "blocks": [
-                    {
-                        "type": "header",
-                        "text": {
-                            "type": "plain_text",
-                            "text": ":argo: :kubernetes: $TITLE",
-                            "emoji": true
-                        }
-                    },
-                    {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "$COMMIT_MESSAGE\n<$COMMIT_URL|확인>"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "section",
-                        "fields": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "*환경*"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "*Action URL*"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "*\`$ENVIRONMENT\`*"
-                            },
-                            {
-                                "type": "mrkdwn",
-                                "text": "<$ACTION_URL|$GITHUB_WORKFLOW>"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-EOF
-}
-
-
 
 # main
 if [ $TYPE == "pr" ]; then
@@ -463,8 +392,6 @@ if [ $TYPE == "pr" ]; then
 elif [ $TYPE == "push" ]; then
     create_push_payload
 elif [ "$TYPE" == "build" ]; then
-    create_build_payload
-elif [ $TYPE == "deploy" ]; then
     create_build_payload
 else
     return 1;
