@@ -22,7 +22,7 @@ fi
 
 echo [INFO] EVENT $GITHUB_EVENT_PATH
 EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
-
+$
 
 create_review_field_func() {
 cat << EOF > review_field.json
@@ -93,7 +93,7 @@ cat << EOF > merged_field.json
     }
 EOF
     MERGED_FIELD_PAYLOAD=$(<merged_field.json)
-    jq ".blocks += [$MERGED_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".attachments[].blocks += [$MERGED_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
 }
 
@@ -138,13 +138,13 @@ cat << EOF > commit_field.json
     "elements": [
         {
             "type": "mrkdwn",
-            "text": "*${COMMIT_MESSAGE}*\n<${COMMIT_URL}|${COMMITTER}>"
+            "text": "*•* ${COMMIT_MESSAGE} <${COMMIT_URL}|${COMMITTER}>"
         }
     ]
 }
 EOF
     COMMIT_FIELD_PAYLOAD=$(<commit_field.json)
-    jq ".blocks += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
+    jq ".attachments[].blocks += [$COMMIT_FIELD_PAYLOAD]" payload.json > tmp.json
     mv tmp.json payload.json
 
 }
@@ -177,62 +177,67 @@ if [ $TYPE == "pr" ]; then
     MERGED_BY_AVATAR=$(echo $PR_RESULT | jq .merged_by.avatar_url)
 
     if [ -z $TITLE ]; then
-        TITLE=$SERVICE_NAME
+        TITLE="$SERVICE_NAME Merge pull request"
     fi
 
     # COLOR=\#A0A0A0
 
 cat << EOF > payload.json
 {
-    "blocks": [
-        {
-            "type": "header",
-            "text": {
-                "type": "plain_text",
-                "text": ":github: :merged: $TITLE",
-                "emoji": true
-            }
-        },
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "*\`$BASE\`*   :arrow-l:   *\`$HEAD\`*"
-            }
-        },
-            {
-                "type": "context",
-                "elements": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "$PR_TITLE\n<$PR_URL|확인>"
-                    }
-                ]
-            },
-        {
-            "type": "divider"
-        },
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "*PR 생성*"
-            }
-        },
-        {
-            "type": "context",
-            "elements": [
-                {
-                    "type": "image",
-                    "image_url": $PR_CREATOR_AVATAR,
-                    "alt_text": ""
-                },
-                {
-                    "type": "plain_text",
-                    "text": $PR_CREATOR
-                }
-            ]
-        }
+	"attachments": [
+			{
+			"color": "#FFD400",
+			    "blocks": [
+				{
+				    "type": "header",
+				    "text": {
+					"type": "plain_text",
+					"text": ":github: :merged: $TITLE",
+					"emoji": true
+				    }
+				},
+				{
+				    "type": "section",
+				    "text": {
+					"type": "mrkdwn",
+					"text": "*\`$BASE\`*   :arrow-l:   *\`$HEAD\`*"
+				    }
+				},
+				    {
+					"type": "context",
+					"elements": [
+					    {
+						"type": "mrkdwn",
+						"text": "$PR_TITLE\n<$PR_URL|확인>"
+					    }
+					]
+				    },
+				{
+				    "type": "divider"
+				},
+				{
+				    "type": "section",
+				    "text": {
+					"type": "mrkdwn",
+					"text": "*PR 생성*"
+				    }
+				},
+				{
+				    "type": "context",
+				    "elements": [
+					{
+					    "type": "image",
+					    "image_url": $PR_CREATOR_AVATAR,
+					    "alt_text": ""
+					},
+					{
+					    "type": "plain_text",
+					    "text": $PR_CREATOR
+					}
+				    ]
+				}
+			    ]
+    	}
     ]
 }
 EOF
@@ -242,56 +247,63 @@ EOF
 
 
 elif [ $TYPE == "push" ]; then
-    echo [INFO] TYPE $TYPE
+#     echo [INFO] TYPE $TYPE
     
 
-    echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
-    echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
-    TITLE=$GITHUB_REPOSITORY
+#     echo [INFO] BRANCH_NAME $GITHUB_REF_NAME
+#     echo [INFO] SERVICE_NAME $GITHUB_REPOSITORY
     BRANCH_NAME=$GITHUB_REF_NAME
 
+    if [ -z $TITLE ]; then
+        TITLE="$(basename $GITHUB_REPOSITORY) Push"
+    fi
 
 cat << EOF > payload.json
-    {
-        "blocks": [
-            {
-                "type": "header",
-                "text": {
-                    "type": "plain_text",
-                    "text": ":github: :git-push: $TITLE",
-                    "emoji": true
-                }
-            },
-            {
-                "type": "section",
-                "fields": [
-                    {
-                        "type": "mrkdwn",
-                        "text": "*브랜치*"
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": " "
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": "\`$BRANCH_NAME\`"
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": " "
-                    }
-                ]
-            }
-        ]
-    }
+{
+	"attachments": [
+		{
+			"color": "#00498C",
+			"blocks": [
+				{
+					"type": "header",
+					"text": {
+						"type": "plain_text",
+						"text": ":github: :git-push: $TITLE",
+						"emoji": true
+					}
+				},
+				{
+					"type": "section",
+					"fields": [
+						{
+							"type": "mrkdwn",
+							"text": "*브랜치*"
+						},
+						{
+							"type": "mrkdwn",
+							"text": " "
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*\`$BRANCH_NAME\`*"
+						},
+						{
+							"type": "mrkdwn",
+							"text": " "
+						}
+					]
+				}
+			]
+		}
+	]
+}
 EOF
 
-    echo $EVENT_RESULT | jq .
+#     echo $EVENT_RESULT | jq .
     BEFORE_COMMIT=$(echo $EVENT_RESULT | jq -r .before)
 
     for COMMIT in $(git rev-list ${BEFORE_COMMIT}..${GITHUB_SHA}); do
-        echo [INFO] COMMIT $COMMIT
+#         echo [INFO] COMMIT $COMMIT
         
         COMMITTER=$(git show -s --format=%an $COMMIT)
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
@@ -324,7 +336,7 @@ elif [ "$TYPE" == "build" ]; then
 
 
     if [ -z $TITLE ]; then
-        TITLE=$SERVICE_NAME 빌드
+        TITLE="$SERVICE_NAME 빌드"
     fi
 
 cat << EOF > payload.json
@@ -351,6 +363,15 @@ cat << EOF > payload.json
                             }
                         ]
                     },
+			{
+					"type": "context",
+					"elements": [
+						{
+							"type": "mrkdwn",
+							"text": "*이미지 태그*\n\`$TAG\`"
+						}
+					]
+			},
                     {
                         "type": "section",
                         "fields": [
@@ -364,7 +385,7 @@ cat << EOF > payload.json
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": "\`$BRANCH_NAME\`"
+                                "text": "*\`$BRANCH_NAME\`*"
                             },
                             {
                                 "type": "mrkdwn",
@@ -393,8 +414,10 @@ elif [ $TYPE == "deploy" ]; then
     COMMIT_MESSAGE=$(echo $COMMIT_RESULT | jq -r .commit.message)
 
     if [ -z $TITLE ]; then
-        TITLE=${SERVICE_NAME} 배포
+        TITLE="${SERVICE_NAME} 배포"
     fi
+    
+    echo [INFO] deployment notification
 
     echo [INFO] deployment notification
 
@@ -435,7 +458,7 @@ cat << EOF > payload.json
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": "\`$ENVIRONMENT\`"
+                                "text": "*\`$ENVIRONMENT\`*"
                             },
                             {
                                 "type": "mrkdwn",
