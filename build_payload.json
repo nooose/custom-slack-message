@@ -2,7 +2,7 @@
     "attachments": 
     [
         {
-            "color": "$COLOR",
+            "color": "COLOR",
             "blocks": [
                 {
                     "type": "header",
