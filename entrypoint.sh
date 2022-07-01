@@ -25,9 +25,9 @@ function create_build_payload() {
     
     
     GTIHUB_EVENT_JSON=`cat $GITHUB_EVENT_PATH`
-    SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.avatar_url`
-    SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.html_url`
-    SENDER_API_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.url`
+    SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.avatar_url`
+    SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.html_url`
+    SENDER_API_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.url`
     SENDER_NAME=`curl -s $SENDER_API_URL \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN" \
