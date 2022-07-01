@@ -27,12 +27,12 @@ function create_build_payload() {
     GTIHUB_EVENT_JSON=`cat $GITHUB_EVENT_PATH`
     SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.avatar_url`
     SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.html_url`
-    SENDER_NAME=`basename $SENDER_HTML_URL`
+    SENDER_API_URL=`echo $GTIHUB_EVENT_JSON | jq .sender.url`
+    SENDER_NAME=`curl -s $SENDER_API_URL \
+                         -H "Accept: application/vnd.github.v3+json" \
+                         -H "Authorization: Bearer $TOKEN" \
+                         | jq -r .name`
 
-    echo SENDER_AVARTAR $SENDER_AVATAR_URL
-    echo SENDER_HTML_URL $SENDER_HTML_URL
-    echo SENDER_NAME $SENDER_NAME
-    
     if [ -z $TITLE ]; then
         TITLE="$SERVICE_NAME 빌드"
     fi
@@ -61,15 +61,38 @@ cat << EOF > payload.json
                             }
                         ]
                     },
-			{
-					"type": "context",
-					"elements": [
-						{
-							"type": "mrkdwn",
-							"text": "*이미지 태그*\n\`$TAG\`"
-						}
-					]
-			},
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Action sender*"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "image",
+                                "image_url": "$SENDER_AVATAR_URL",
+                                "alt_text": "avatar"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "\n<$SENDER_HTML_URL|$SENDER_NAME>"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": "*이미지 태그*\n\`$TAG\`"
+                            }
+                        ]
+                    },
                     {
                         "type": "section",
                         "fields": [
@@ -119,6 +142,6 @@ else
     return 1;
 fi
 
-# send message to slack channel
-# curl -s $SLACK_WEBHOOK \
-#      -d @payload.json
+send message to slack channel
+curl -s $SLACK_WEBHOOK \
+     -d @payload.json
