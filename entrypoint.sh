@@ -122,7 +122,7 @@ EOF
 }
 
 echo [INFO] EVENT $GITHUB_EVENT_PATH
-echo `cat $GITHUB_EVENT_PATH` 
+echo `cat $GITHUB_EVENT_PATH` | jq .
 
 
 # === main ===
