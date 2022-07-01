@@ -100,8 +100,10 @@ else
     COLOR=\#2EB886
 fi
 
-echo [INFO] EVENT $GITHUB_EVENT_PATH
-EVENT_RESULT=$GITHUB_EVENT_PATH
+
+GITHUB_EVENT_JSON=$(<GITHUB_EVENT_PATH)
+echo [INFO] EVENT
+echo $GITHUB_EVENT_JSON | jq .
 
 if [ "$TYPE" == "build" ]; then
     create_build_payload
