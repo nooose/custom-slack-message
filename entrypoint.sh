@@ -68,7 +68,7 @@ else
 fi
 
 # echo payload
-echo `cat payload.json`
+echo `cat payload.json` | jq .
 
 # send message to slack channel
 curl -s $SLACK_WEBHOOK \
