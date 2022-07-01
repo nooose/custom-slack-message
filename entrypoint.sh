@@ -103,7 +103,7 @@ fi
 
 
 echo [INFO] EVENT $GITHUB_EVENT_PATH
-cat $GITHUB_EVENT_JSON | jq .
+echo `cat $GITHUB_EVENT_JSON` | jq .
 
 if [ "$TYPE" == "build" ]; then
     create_build_payload
