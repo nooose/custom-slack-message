@@ -24,7 +24,7 @@ echo [INFO] EVENT $GITHUB_EVENT_PATH
 EVENT_RESULT=$(<$GITHUB_EVENT_PATH)
 $
 
-create_review_field_func() {
+function create_review_field() {
 cat << EOF > review_field.json
     {
         "type": "section",
@@ -39,7 +39,7 @@ EOF
     mv tmp.json payload.json
 }
 
-create_reviewer_func() {
+function create_reviewer() {
     USER=$1
     AVATAR=$2
 
@@ -65,7 +65,7 @@ EOF
     mv tmp.json payload.json
 }
 
-create_mergedBy_field_func() {
+function create_merged_by_field() {
     MERGED_BY=$1
     MERGED_BY_AVATAR=$2
 
@@ -97,7 +97,7 @@ EOF
     mv tmp.json payload.json
 }
 
-add_reviewer_func() {
+function add_reviewer() {
     # 리뷰어 리스트
     APPROVED_REVIEWS=$(echo $PR_REVIEW_RESULT | \
                         jq '.[] | select(.state == "APPROVED") | [.user.login, .user.avatar_url]' | \
@@ -110,7 +110,7 @@ add_reviewer_func() {
     done
 
     if [ $REVIEWS_SIZE -gt 0 ]; then
-        create_review_field_func
+        create_review_field
     fi
 
 
@@ -121,13 +121,13 @@ add_reviewer_func() {
         AVATAR=$(echo $REVIEW | cut -d ',' -f2)
         
         echo $USER $AVATAR
-        create_reviewer_func $USER $AVATAR
+        create_reviewer $USER $AVATAR
     done
 }
 
 
 
-add_commit_field_func() {
+function add_commit_field() {
     COMMIT_MESSAGE=$1
     COMMIT_URL=$2
     COMMITTER=$3
@@ -242,8 +242,8 @@ cat << EOF > payload.json
 }
 EOF
 
-    add_reviewer_func
-    create_mergedBy_field_func $MERGED_BY $MERGED_BY_AVATAR
+    add_reviewer
+    create_merged_by_field $MERGED_BY $MERGED_BY_AVATAR
 
 
 elif [ $TYPE == "push" ]; then
@@ -309,7 +309,7 @@ EOF
         COMMIT_MESSAGE=$(git show -s --format=%B $COMMIT)
         COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT
         
-        add_commit_field_func "$COMMIT_MESSAGE" "$COMMIT_URL" "$COMMITTER"
+        add_commit_field "$COMMIT_MESSAGE" "$COMMIT_URL" "$COMMITTER"
     done
 
     
@@ -476,5 +476,7 @@ else
     return 1;
 fi
 
+
+# send message to slack channel
 curl -s $SLACK_WEBHOOK \
      -d @payload.json
