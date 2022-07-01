@@ -43,7 +43,7 @@ function create_build_payload() {
     sed -i -e "s@ACTION_URL@$ACTION_URL@g" /build_payload.json
     sed -i -e "s@GITHUB_WORKFLOW@$GITHUB_WORKFLOW@g" /build_payload.json
 
-    mv /build_payload.json payload.json
+    mv /build_payload.json ./payload.json
 }
 
 # === main ===
@@ -66,6 +66,9 @@ if [ "$TYPE" == "build" ]; then
 else
     return 1;
 fi
+
+# echo payload
+echo `cat payload.json` | jq .
 
 # send message to slack channel
 curl -s $SLACK_WEBHOOK \
