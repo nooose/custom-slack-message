@@ -16,7 +16,11 @@ function create_build_payload() {
     COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
     GTIHUB_EVENT_JSON=`cat $GITHUB_EVENT_PATH`
 
-    COMMIT_MESSAGE=`echo $GTIHUB_EVENT_JSON | jq -r .head_commit.message`
+    COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/${GITHUB_SHA}
+    COMMIT_RESULT=`curl -s $COMMIT_API \
+                         -H "Accept: application/vnd.github.v3+json" \
+                         -H "Authorization: Bearer $TOKEN"`
+    COMMIT_MESSAGE=`echo $COMMIT_RESULT | jq -r .commit.message`
     COMMIT_MESSAGE=${COMMIT_MESSAGE//\\/\\\\}
     SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.avatar_url`
     SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.html_url`
