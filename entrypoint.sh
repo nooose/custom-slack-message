@@ -20,8 +20,7 @@ function create_build_payload() {
     COMMIT_RESULT=`curl -s $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN"`
-    COMMIT_MESSAGE=`echo $COMMIT_RESULT | jq -r .commit.message`
-    COMMIT_MESSAGE=${COMMIT_MESSAGE//\\n/  }
+    COMMIT_MESSAGE=`echo $COMMIT_RESULT | jq -r .commit.message | tr '\n' ' '`
     SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.avatar_url`
     SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.html_url`
     SENDER_API_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.url`
