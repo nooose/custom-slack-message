@@ -20,7 +20,7 @@ function create_build_payload() {
     COMMIT_RESULT=`curl -s $COMMIT_API \
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN"`
-    COMMIT_MESSAGE=`echo $COMMIT_RESULT | jq -r .commit.message | tr '\n' ' '`
+    COMMIT_MESSAGE=`echo $COMMIT_RESULT | jq -r .commit.message | tr '\n' '\\n'`
     SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.avatar_url`
     SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.html_url`
     SENDER_API_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.url`
@@ -28,6 +28,7 @@ function create_build_payload() {
                          -H "Accept: application/vnd.github.v3+json" \
                          -H "Authorization: Bearer $TOKEN" \
                          | jq -r .name`
+    IMAGE_NAME=${IMAGE_NAME#*/}:$TAG
 
     if [ -z $TITLE ]; then
         TITLE="$SERVICE_NAME 빌드"
@@ -42,7 +43,7 @@ function create_build_payload() {
     sed -i -e "s@SENDER_AVATAR_URL@$SENDER_AVATAR_URL@g" /build_payload.json
     sed -i -e "s@SENDER_HTML_URL@$SENDER_HTML_URL@g" /build_payload.json
     sed -i -e "s@SENDER_NAME@$SENDER_NAME@g" /build_payload.json
-    sed -i -e "s@TAG@$TAG@g" /build_payload.json
+    sed -i -e "s@IMAGE_NAME@$IMAGE_NAME@g" /build_payload.json
     sed -i -e "s@BRANCH_NAME@$BRANCH_NAME@g" /build_payload.json
     sed -i -e "s@ACTION_URL@$ACTION_URL@g" /build_payload.json
     sed -i -e "s@GITHUB_WORKFLOW@$GITHUB_WORKFLOW@g" /build_payload.json
