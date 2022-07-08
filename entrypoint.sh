@@ -5,6 +5,7 @@ TYPE=$1
 SLACK_WEBHOOK=$2
 TOKEN=$3
 COLOR=$4
+JOB_STATUS=$4
 TITLE=$5
 
 function create_build_payload() {
@@ -34,11 +35,9 @@ function create_build_payload() {
                          | jq -r .name`
     IMAGE_NAME=${IMAGE_NAME#*/}:$TAG
 
-    if [ "$4" != "success" ]; then  # check job status
+    if [ "$JOB_STATUS" != "success" ]; then  # check job status
         IMAGE_NAME="none"
     fi
-
-    echo "[INFO] COMMIT_MESSAGE: $COMMIT_MESSAGE"
 
     sed -i -e "s@COLOR@$COLOR@g" /build_payload.json
     sed -i -e "s@TITLE@$TITLE@g" /build_payload.json
