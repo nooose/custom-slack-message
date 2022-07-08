@@ -34,6 +34,10 @@ function create_build_payload() {
         TITLE="$SERVICE_NAME 빌드"
     fi
 
+    if [ "$4" != "success" ]; then
+        IMAGE_NAME="none"
+    fi
+
     echo "[INFO] COMMIT_MESSAGE: $COMMIT_MESSAGE"
 
     sed -i -e "s@COLOR@$COLOR@g" /build_payload.json
