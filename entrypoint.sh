@@ -8,6 +8,10 @@ COLOR=$4
 TITLE=$5
 
 function create_build_payload() {
+    if [ -z $TITLE ]; then
+        TITLE="$SERVICE_NAME 빌드"
+    fi
+
     REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=`basename $REPO_NAME`
     BRANCH_NAME=${GITHUB_REF##*heads/}
@@ -30,11 +34,7 @@ function create_build_payload() {
                          | jq -r .name`
     IMAGE_NAME=${IMAGE_NAME#*/}:$TAG
 
-    if [ -z $TITLE ]; then
-        TITLE="$SERVICE_NAME 빌드"
-    fi
-
-    if [ "$4" != "success" ]; then
+    if [ "$4" != "success" ]; then  # check job status
         IMAGE_NAME="none"
     fi
 
