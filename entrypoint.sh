@@ -55,8 +55,14 @@ function create_build_payload() {
 }
 
 # === main ===
+# echo event
 echo "[INFO] EVENT $GITHUB_EVENT_PATH"
 echo `cat $GITHUB_EVENT_PATH` | jq .
+echo "[INFO] GITHUB_ACTOR $GITHUB_ACTOR"
+echo "[INFO] GITHUB_WORKFLOW $GITHUB_WORKFLOW"
+echo "[INFO] GITHUB_JOB $GITHUB_JOB"
+echo "[INFO] GITHUB_ACTION $GITHUB_ACTION"
+
 
 
 if [ "$COLOR" == "success" ]; then
