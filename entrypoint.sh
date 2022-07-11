@@ -9,7 +9,9 @@ JOB_STATUS=$4
 TITLE=$5
 
 function create_build_payload() {
-    if [ -z $TITLE ]; then
+    if [ $GITHUB_EVENT_NAME == "workflow_dispatch" ]; then
+        TITLE="$SERVICE_NAME 수동 빌드"
+    else
         TITLE="$SERVICE_NAME 빌드"
     fi
 
