@@ -25,7 +25,7 @@
 					"fields": [
 						{
 							"type": "mrkdwn",
-							"text": "*Action sender*"
+							"text": "*GITHUB ACTOR*"
 						}
 					]
 				},

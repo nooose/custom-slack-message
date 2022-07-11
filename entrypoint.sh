@@ -28,11 +28,7 @@ function create_build_payload() {
     COMMIT_MESSAGE=`echo $COMMIT_RESULT | jq -r .commit.message | tr '\n' ' '`
     SENDER_AVATAR_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.avatar_url`
     SENDER_HTML_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.html_url`
-    SENDER_API_URL=`echo $GTIHUB_EVENT_JSON | jq -r .sender.url`
-    SENDER_NAME=`curl -s $SENDER_API_URL \
-                         -H "Accept: application/vnd.github.v3+json" \
-                         -H "Authorization: Bearer $TOKEN" \
-                         | jq -r .name`
+    SENDER_NAME=$GITHUB_ACTOR
     IMAGE_NAME=${IMAGE_NAME#*/}:$TAG
 
     if [ "$JOB_STATUS" != "success" ]; then  # check job status
@@ -58,10 +54,7 @@ function create_build_payload() {
 # echo event
 echo "[INFO] EVENT $GITHUB_EVENT_PATH"
 echo `cat $GITHUB_EVENT_PATH` | jq .
-echo "[INFO] GITHUB_ACTOR $GITHUB_ACTOR"
-echo "[INFO] GITHUB_WORKFLOW $GITHUB_WORKFLOW"
-echo "[INFO] GITHUB_JOB $GITHUB_JOB"
-echo "[INFO] GITHUB_ACTION $GITHUB_ACTION"
+echo "[INFO] ACTIONS_RUNTIME_URL $ACTIONS_RUNTIME_URL"
 
 
 
