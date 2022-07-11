@@ -54,7 +54,7 @@ function create_build_payload() {
 # echo event
 echo "[INFO] EVENT $GITHUB_EVENT_PATH"
 echo `cat $GITHUB_EVENT_PATH` | jq .
-echo "[INFO] ACTIONS_RUNTIME_URL $ACTIONS_RUNTIME_URL"
+echo "[INFO] GITHUB_EVENT_NAME  $GITHUB_EVENT_NAME "
 
 
 
