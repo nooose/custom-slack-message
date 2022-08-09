@@ -78,7 +78,9 @@ else
 fi
 
 # echo payload
-echo "[INFO] slack payload"
+echo "[INFO] slack payload (raw)"
+echo `cat payload.json`
+echo "[INFO] slack payload (json)"
 echo `cat payload.json` | jq .
 
 # send message to slack channel
