@@ -9,6 +9,8 @@ JOB_STATUS=$4
 TITLE=$5
 
 function create_build_payload() {
+    SERVICE_NAME=`basename $REPO_NAME`
+    
     if [ $GITHUB_EVENT_NAME == "workflow_dispatch" ]; then
         TITLE="$SERVICE_NAME 수동 빌드"
     else
@@ -16,7 +18,6 @@ function create_build_payload() {
     fi
 
     REPO_NAME=${GITHUB_REPOSITORY}
-    SERVICE_NAME=`basename $REPO_NAME`
     BRANCH_NAME=${GITHUB_REF##*heads/}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
