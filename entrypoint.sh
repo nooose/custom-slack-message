@@ -9,7 +9,7 @@ JOB_STATUS=$4
 TITLE=$5
 
 function create_build_payload() {
-    REPO_NAME=${REPOSITORY:GITHUB_REPOSITORY}
+    REPO_NAME=${GITHUB_REPOSITORY}
     SERVICE_NAME=`basename $REPO_NAME`
     
     if [ $GITHUB_EVENT_NAME == "workflow_dispatch" ]; then
