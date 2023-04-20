@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM public.ecr.aws/docker/library/alpine:3.10
 
 RUN apk add --no-cache curl jq bash git
 
