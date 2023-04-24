@@ -90,7 +90,7 @@ function create_build_event_payload() {
     sed -i -e "s@SENDER_HTML_URL@$SENDER_HTML_URL@g" /build_payload.json
     sed -i -e "s@SENDER_NAME@$SENDER_NAME@g" /build_payload.json
     sed -i -e "s@IMAGE_NAME@$IMAGE_NAME@g" /build_payload.json
-    sed -i -e "s@BRANCH_NAME@$BRANCH_NAME@g" /build_payload.json
+    sed -i -e "s@BRANCH_NAME@$BRANCH@g" /build_payload.json
     sed -i -e "s@ACTION_URL@$ACTION_URL@g" /build_payload.json
     sed -i -e "s@GITHUB_WORKFLOW@$GITHUB_WORKFLOW@g" /build_payload.json
 
