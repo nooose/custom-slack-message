@@ -63,10 +63,9 @@ function create_build_event_payload() {
         TITLE="$SERVICE_NAME 빌드"
     fi
 
-    BRANCH_NAME=${GITHUB_REF##*heads/}
     ACTION_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
     GITHUB_WORKFLOW=${GITHUB_WORKFLOW}
-    COMMIT_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$COMMIT_SHA
+    COMMIT_URL=${GITHUB_SERVER_URL}/$REPOSITORY/commit/$COMMIT_SHA
     GTIHUB_EVENT_JSON=`cat $GITHUB_EVENT_PATH`
 
     COMMIT_API=https://api.github.com/repos/$REPO_NAME/commits/$COMMIT_SHA

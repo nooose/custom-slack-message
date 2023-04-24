@@ -26,7 +26,7 @@ branding:
 
 runs:
   using: 'docker'                 
-  image: 'docker://ghcr.io/nooose/custom-slack-message/slack-message:v1.2'             
+  image: 'docker://ghcr.io/nooose/custom-slack-message/slack-message:v1.3'             
   args:
     - ${{ inputs.type }}  # build
     - ${{ inputs.slack_webhook }}
